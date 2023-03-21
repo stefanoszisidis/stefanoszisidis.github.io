@@ -31,7 +31,7 @@ nav ul {
 }
 
 nav li {
-  display: inline-block;
+  display: flex;
 }
 
 nav a {
