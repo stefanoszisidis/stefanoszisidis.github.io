@@ -70,8 +70,6 @@ p {
 
 
 .mdi-icon {
-    display: flex;
-  align-items: center;
   width: 1.2em;
   height: 1.2em;
   vertical-align: middle;
