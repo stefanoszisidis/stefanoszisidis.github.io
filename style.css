@@ -1,28 +1,17 @@
-/* Normalize styles across browsers */
-* {
-  box-sizing: border-box;
-}
-
-/* Apply a basic background color and font family to the whole page */
 body {
   background-color: #f2f2f2;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #333;
+  font-family: sans-serif;
   margin: 0;
+  padding: 0;
 }
 
-/* Style the header section with a background color and add some padding */
 header {
-  background-color: #333;
-  color: #fff;
+  background-color: #444;
+  color: white;
+  height: 60px;
   padding: 10px;
 }
-
-/* Style the navigation bar links */
-.navbar {
-  background-color: #333;
-  color: #000;
-}
-
 
 nav ul {
   list-style: none;
@@ -31,50 +20,21 @@ nav ul {
 }
 
 nav li {
-  display: flex;
-}
-
-nav a {
-  display: flex;
-  color: #fff;
-  text-decoration: none;
-  padding: 10px;
-}
-
-nav a:hover {
-  background-color: #555;
-}
-
-/* Style the main content area with some padding */
-main {
-  padding: 20px;
-}
-
-/* Style the heading and paragraph tags */
-h1, p {
+  display: inline-block;
   margin: 0;
   padding: 0;
 }
 
-h1 {
-  font-size: 32px;
-  font-weight: normal;
-  margin-bottom: 10px;
+nav a {
+  color: white;
+  display: block;
+  font-size: 18px;
+  padding: 20px;
+  text-decoration: none;
 }
 
-p {
-  font-size: 16px;
-  line-height: 1.5;
-  margin-bottom: 20px;
-}
-
-
-.mdi-icon {
-  width: 1.2em;
-  height: 1.2em;
-  vertical-align: middle;
-  margin-right: 1px;
-  fill: red; 
+nav a:hover {
+  background-color: #555;
 }
 
 
