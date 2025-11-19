@@ -177,23 +177,6 @@ img {
   display: inline-block;
   padding: 0.75rem 1.5rem;
   background-color: var(--accent-primary);
-  color: var(--bg-body);
-  border-radius: 6px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-
-.btn:hover {
-  background-color: var(--accent-hover);
-  transform: translateY(-2px);
-}
-
-/* Footer */
-.site-footer {
-  padding: var(--spacing-lg) 0;
-  border-top: 1px solid var(--border-color);
-  text-align: center;
-  color: var(--text-secondary);
   font-size: 0.875rem;
 }
 
@@ -235,24 +218,6 @@ img {
   padding-bottom: 56.25%;
   /* 16:9 aspect ratio */
   height: 0;
-  overflow: hidden;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-}
-
-.video-wrapper iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .hero h1 {
-    font-size: 2rem;
-  }
 
   .cards-section .container {
     grid-template-columns: 1fr;
