@@ -1,29 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-  <head>
+<head>
   <meta charset="UTF-8">
-  <title>RunTheCode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music - RunTheCode.gr</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-  
-  <body>
-    <header>
-<nav>
-  <ul>
-    <li><a href="index.html"><img class="mdi-icon" src="../images/icons/mdi-home.svg" width="24" height="24" alt="Home Icon"> Home</a></li>
-    <li><a href="music.html">Music</a></li>
-    <li><a href="tech.html">Tech</a></li>
-  </ul>
-</nav>
 
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-title">🏠 RunTheCode.gr</a>
+      <a href="https://github.com/runthecode-gr" class="github-link" target="_blank">GitHub Profile</a>
+    </div>
+  </header>
 
-    </header>
-    <main>
-      <h1>My Music Playlist</h1>
-      <div class="youtube">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLo5Dkz0iHmDiCw7fQ3vY3V5Sb7Z26VlQO" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Music Playlist</h1>
+        <p class="subtitle">Explore our music collection and creative projects.</p>
       </div>
-    </main>
-  </body>
+    </section>
+
+    <section class="content-section">
+      <div class="container">
+        <div class="video-wrapper">
+          <iframe width="560" height="315"
+            src="https://www.youtube.com/embed/videoseries?list=PLo5Dkz0iHmDiCw7fQ3vY3V5Sb7Z26VlQO" frameborder="0"
+            allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2025 RunTheCode.gr Team</p>
+    </div>
+  </footer>
+</body>
+
 </html>
