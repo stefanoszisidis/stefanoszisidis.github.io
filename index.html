@@ -1,23 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>RunTheCode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stefanos Zisidis | Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="index.html"><img class="mdi-icon" src="../images/icons/mdi-home.svg" width="24" height="24" alt="Home Icon"> Home</a></li>
+  <header class="site-header">
+    <nav class="container">
+      <a href="index.html" class="logo">SZ</a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
         <li><a href="music.html">Music</a></li>
         <li><a href="tech.html">Tech</a></li>
       </ul>
     </nav>
   </header>
+
   <main>
-    <h1>Hello World</h1>
-    <p>I'm hosted with GitHub Pages_version2.</p>
+    <section class="hero">
+      <div class="container">
+        <span class="greeting">Hello, I'm</span>
+        <h1 class="headline">Stefanos Zisidis</h1>
+        <p class="subheadline">Building digital experiences with code and creativity.</p>
+        <div class="cta-group">
+          <a href="tech.html" class="btn btn-primary">View Projects</a>
+          <a href="music.html" class="btn btn-secondary">Listen to Music</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="about container">
+      <h2>About Me</h2>
+      <p>I'm a passionate developer hosted on GitHub Pages. I love exploring new technologies and creating useful tools.
+      </p>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2025 Stefanos Zisidis. All rights reserved.</p>
+    </div>
+  </footer>
 </body>
+
 </html>
