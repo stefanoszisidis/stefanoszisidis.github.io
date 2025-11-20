@@ -15,7 +15,11 @@
   <header class="site-header">
     <div class="container">
       <a href="index.html" class="site-title">RunTheCode.gr</a>
-      <a href="https://github.com/runthecode-gr" class="github-link" target="_blank">GitHub Profile</a>
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">/</span>
+        <span class="current">Music</span>
+      </nav>
     </div>
   </header>
 
@@ -23,16 +27,85 @@
     <section class="music-hero">
       <div class="container">
         <h1>Music</h1>
+        <p class="music-subtitle">Curated quarterly playlists featuring handpicked tracks</p>
+      </div>
+    </section>
+
+    <section class="playlist-info">
+      <div class="container">
+        <div class="info-card">
+          <h2>Quarterly Music Collections</h2>
+          <p>Every three months, I curate a special playlist of songs that resonated with me during that period. Each
+            collection represents a musical journey through the quarter, featuring tracks across various genres and
+            moods.</p>
+          <p class="current-playlist">Currently featured: <strong>2023 Q1 Playlist</strong></p>
+        </div>
       </div>
     </section>
 
     <section class="music-content">
       <div class="container">
-        <div class="video-container">
-          <div class="video-wrapper">
-            <iframe width="560" height="315"
-              src="https://www.youtube.com/embed/videoseries?list=PLo5Dkz0iHmDiCw7fQ3vY3V5Sb7Z26VlQO" frameborder="0"
-              allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <div class="playlist-grid">
+          <div class="video-container">
+            <div class="video-wrapper">
+              <iframe id="youtube-player" width="560" height="315"
+                src="https://www.youtube.com/embed/videoseries?list=PLo5Dkz0iHmDiCw7fQ3vY3V5Sb7Z26VlQO&enablejsapi=1"
+                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <div class="tracklist-container">
+            <h3>Tracklist</h3>
+            <div class="tracklist">
+              <div class="track-item" data-index="0">
+                <span class="track-number">01</span>
+                <span class="track-name">Track 1</span>
+              </div>
+              <div class="track-item" data-index="1">
+                <span class="track-number">02</span>
+                <span class="track-name">Track 2</span>
+              </div>
+              <div class="track-item" data-index="2">
+                <span class="track-number">03</span>
+                <span class="track-name">Track 3</span>
+              </div>
+              <div class="track-item" data-index="3">
+                <span class="track-number">04</span>
+                <span class="track-name">Track 4</span>
+              </div>
+              <div class="track-item" data-index="4">
+                <span class="track-number">05</span>
+                <span class="track-name">Track 5</span>
+              </div>
+              <div class="track-item" data-index="5">
+                <span class="track-number">06</span>
+                <span class="track-name">Track 6</span>
+              </div>
+              <div class="track-item" data-index="6">
+                <span class="track-number">07</span>
+                <span class="track-name">Track 7</span>
+              </div>
+              <div class="track-item" data-index="7">
+                <span class="track-number">08</span>
+                <span class="track-name">Track 8</span>
+              </div>
+              <div class="track-item" data-index="8">
+                <span class="track-number">09</span>
+                <span class="track-name">Track 9</span>
+              </div>
+              <div class="track-item" data-index="9">
+                <span class="track-number">10</span>
+                <span class="track-name">Track 10</span>
+              </div>
+              <div class="track-item" data-index="10">
+                <span class="track-number">11</span>
+                <span class="track-name">Track 11</span>
+              </div>
+              <div class="track-item" data-index="11">
+                <span class="track-number">12</span>
+                <span class="track-name">Track 12</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -44,6 +117,65 @@
       <p>&copy; 2025 RunTheCode.gr Team</p>
     </div>
   </footer>
+
+  <script>
+    // YouTube IFrame API
+    let player;
+    let isAPIReady = false;
+
+    // Load YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // Called when API is ready
+    function onYouTubeIframeAPIReady() {
+      isAPIReady = true;
+      player = new YT.Player('youtube-player', {
+        events: {
+          'onReady': onPlayerReady
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      // Set up track click handlers
+      const trackItems = document.querySelectorAll('.track-item');
+      trackItems.forEach(trackItem => {
+        trackItem.addEventListener('click', function () {
+          const trackIndex = parseInt(this.getAttribute('data-index'));
+
+          // Remove active class from all tracks
+          trackItems.forEach(item => item.classList.remove('active'));
+
+          // Add active class to clicked track
+          this.classList.add('active');
+
+          // Play the selected track
+          if (player && player.playVideoAt) {
+            player.playVideoAt(trackIndex);
+          }
+        });
+      });
+    }
+
+    // Fallback if API doesn't load
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if (!isAPIReady) {
+          console.log('YouTube API not loaded, using basic functionality');
+          const trackItems = document.querySelectorAll('.track-item');
+          trackItems.forEach(trackItem => {
+            trackItem.addEventListener('click', function () {
+              trackItems.forEach(item => item.classList.remove('active'));
+              this.classList.add('active');
+            });
+          });
+        }
+      }, 3000);
+    });
+  </script>
 </body>
 
 </html>
