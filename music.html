@@ -133,109 +133,63 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <p>&copy; 2025 RunTheCode.gr Team</p>
-    </div>
-  </footer>
+  events: {
+  'onReady': onPlayerReady,
+  'onStateChange': onPlayerStateChange
+  }
+  });
+  }
 
-  <script>
-    // YouTube IFrame API
-    let player;
-    let isAPIReady = false;
-    let updateInterval;
+  function onPlayerReady(event) {
+  // Set up track click handlers
+  const trackItems = document.querySelectorAll('.track-item');
+  trackItems.forEach(trackItem => {
+  trackItem.addEventListener('click', function () {
+  const trackIndex = parseInt(this.getAttribute('data-index'));
 
-    // Load YouTube IFrame API
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  // Play the selected track
+  if (player && player.playVideoAt) {
+  player.playVideoAt(trackIndex);
+  }
 
-    // Function to update active track highlight
-    function updateActiveTrack() {
-      if (!player || !player.getPlaylistIndex) return;
+  // Update will happen automatically via the interval
+  });
+  });
 
-      try {
-        const currentIndex = player.getPlaylistIndex();
-        const trackItems = document.querySelectorAll('.track-item');
+  // Start polling for current track (every 500ms)
+  updateInterval = setInterval(updateActiveTrack, 500);
 
-        // Remove active class from all tracks
-        trackItems.forEach(item => item.classList.remove('active'));
+  // Initial update
+  updateActiveTrack();
+  }
 
-        // Add active class to currently playing track
-        const currentTrack = document.querySelector(`.track-item[data-index="${currentIndex}"]`);
-        if (currentTrack) {
-          currentTrack.classList.add('active');
+  function onPlayerStateChange(event) {
+  // Update immediately when state changes
+  updateActiveTrack();
+  }
 
-          // Scroll the track into view if it's not visible
-          currentTrack.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      } catch (error) {
-        // Silently handle errors (player might not be ready)
-      }
-    }
+  // Fallback if API doesn't load
+  window.addEventListener('load', function () {
+  setTimeout(function () {
+  if (!isAPIReady) {
+  console.log('YouTube API not loaded, using basic functionality');
+  const trackItems = document.querySelectorAll('.track-item');
+  trackItems.forEach(trackItem => {
+  trackItem.addEventListener('click', function () {
+  trackItems.forEach(item => item.classList.remove('active'));
+  this.classList.add('active');
+  });
+  });
+  }
+  }, 3000);
+  });
 
-    // Called when API is ready
-    function onYouTubeIframeAPIReady() {
-      isAPIReady = true;
-      player = new YT.Player('youtube-player', {
-        events: {
-          'onReady': onPlayerReady,
-          'onStateChange': onPlayerStateChange
-        }
-      });
-    }
-
-    function onPlayerReady(event) {
-      // Set up track click handlers
-      const trackItems = document.querySelectorAll('.track-item');
-      trackItems.forEach(trackItem => {
-        trackItem.addEventListener('click', function () {
-          const trackIndex = parseInt(this.getAttribute('data-index'));
-
-          // Play the selected track
-          if (player && player.playVideoAt) {
-            player.playVideoAt(trackIndex);
-          }
-
-          // Update will happen automatically via the interval
-        });
-      });
-
-      // Start polling for current track (every 500ms)
-      updateInterval = setInterval(updateActiveTrack, 500);
-
-      // Initial update
-      updateActiveTrack();
-    }
-
-    function onPlayerStateChange(event) {
-      // Update immediately when state changes
-      updateActiveTrack();
-    }
-
-    // Fallback if API doesn't load
-    window.addEventListener('load', function () {
-      setTimeout(function () {
-        if (!isAPIReady) {
-          console.log('YouTube API not loaded, using basic functionality');
-          const trackItems = document.querySelectorAll('.track-item');
-          trackItems.forEach(trackItem => {
-            trackItem.addEventListener('click', function () {
-              trackItems.forEach(item => item.classList.remove('active'));
-              this.classList.add('active');
-            });
-          });
-        }
-      }, 3000);
-    });
-
-    // Clean up interval when page unloads
-    window.addEventListener('beforeunload', function () {
-      if (updateInterval) {
-        clearInterval(updateInterval);
-      }
-    });
+  // Clean up interval when page unloads
+  window.addEventListener('beforeunload', function () {
+  if (updateInterval) {
+  clearInterval(updateInterval);
+  }
+  });
   </script>
 </body>
 
