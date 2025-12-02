@@ -143,6 +143,7 @@
     // YouTube IFrame API
     let player;
     let isAPIReady = false;
+    let updateInterval;
 
     // Load YouTube IFrame API
     const tag = document.createElement('script');
@@ -150,12 +151,37 @@
     const firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+    // Function to update active track highlight
+    function updateActiveTrack() {
+      if (!player || !player.getPlaylistIndex) return;
+
+      try {
+        const currentIndex = player.getPlaylistIndex();
+        const trackItems = document.querySelectorAll('.track-item');
+
+        // Remove active class from all tracks
+        trackItems.forEach(item => item.classList.remove('active'));
+
+        // Add active class to currently playing track
+        const currentTrack = document.querySelector(`.track-item[data-index="${currentIndex}"]`);
+        if (currentTrack) {
+          currentTrack.classList.add('active');
+
+          // Scroll the track into view if it's not visible
+          currentTrack.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      } catch (error) {
+        // Silently handle errors (player might not be ready)
+      }
+    }
+
     // Called when API is ready
     function onYouTubeIframeAPIReady() {
       isAPIReady = true;
       player = new YT.Player('youtube-player', {
         events: {
-          'onReady': onPlayerReady
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
         }
       });
     }
@@ -167,18 +193,25 @@
         trackItem.addEventListener('click', function () {
           const trackIndex = parseInt(this.getAttribute('data-index'));
 
-          // Remove active class from all tracks
-          trackItems.forEach(item => item.classList.remove('active'));
-
-          // Add active class to clicked track
-          this.classList.add('active');
-
           // Play the selected track
           if (player && player.playVideoAt) {
             player.playVideoAt(trackIndex);
           }
+
+          // Update will happen automatically via the interval
         });
       });
+
+      // Start polling for current track (every 500ms)
+      updateInterval = setInterval(updateActiveTrack, 500);
+
+      // Initial update
+      updateActiveTrack();
+    }
+
+    function onPlayerStateChange(event) {
+      // Update immediately when state changes
+      updateActiveTrack();
     }
 
     // Fallback if API doesn't load
@@ -195,6 +228,13 @@
           });
         }
       }, 3000);
+    });
+
+    // Clean up interval when page unloads
+    window.addEventListener('beforeunload', function () {
+      if (updateInterval) {
+        clearInterval(updateInterval);
+      }
     });
   </script>
 </body>
