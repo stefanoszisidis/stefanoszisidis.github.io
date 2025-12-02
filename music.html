@@ -255,6 +255,9 @@
           // Update current year
           currentYear = year;
 
+          // Reset player initialization flag for new year
+          playerInitialized = false;
+
           // Show and update quarter buttons
           updateQuarterButtons(year);
 
@@ -345,7 +348,7 @@
 
       // Initialize or update the player
       if (!playerInitialized) {
-        // First time - create the player
+        // First time or after year change - create the player
         initializePlayer(playlist.id);
       } else if (player && player.loadPlaylist) {
         // Player exists - just load new playlist
@@ -354,80 +357,134 @@
           list: playlist.id,
           listType: 'playlist',
           index: 0
-        // Remove old listeners by cloning
-        const newTrackItem = trackItem.cloneNode(true);
-          trackItem.parentNode.replaceChild(newTrackItem, trackItem);
-
-          newTrackItem.addEventListener('click', function () {
-            const trackIndex = parseInt(this.getAttribute('data-index'));
-            console.log('Track clicked:', trackIndex);
-
-            // Play the selected track
-            if (player && player.playVideoAt) {
-              player.playVideoAt(trackIndex);
-            }
-          });
         });
-      }
-
-      // Function to update active track highlight
-      function updateActiveTrack() {
-        if (!player || !player.getPlaylistIndex) return;
-
-        try {
-          const currentIndex = player.getPlaylistIndex();
-          const trackItems = document.querySelectorAll('.track-item');
-
-          // Remove active class from all tracks
-          trackItems.forEach(item => item.classList.remove('active'));
-
-          // Add active class to currently playing track
-          const currentTrack = document.querySelector(`.track-item[data-index="${currentIndex}"]`);
-          if (currentTrack) {
-            currentTrack.classList.add('active');
-
-            // Only scroll if the track has changed
-            if (currentIndex !== lastPlayingIndex) {
-              currentTrack.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-              lastPlayingIndex = currentIndex;
-            }
-          }
-        } catch (error) {
-          // Silently handle errors (player might not be ready)
-        }
-      }
-
-      function onPlayerReady(event) {
-        console.log('Player ready');
         setupTrackClickHandlers();
+      }
+    }
 
-        // Clear existing interval if any
-        if (updateInterval) {
-          clearInterval(updateInterval);
+    // Initialize the YouTube player
+    function initializePlayer(playlistId) {
+      console.log('Initializing player with playlist:', playlistId);
+
+      // Wait for API if not ready
+      if (!isAPIReady) {
+        console.log('Waiting for YouTube API...');
+        setTimeout(() => initializePlayer(playlistId), 200);
+        return;
+      }
+
+      // Clear existing interval if any
+      if (updateInterval) {
+        clearInterval(updateInterval);
+        updateInterval = null;
+      }
+
+      // Destroy existing player if any
+      if (player) {
+        try {
+          player.destroy();
+          player = null;
+        } catch (e) {
+          console.log('Error destroying player:', e);
         }
-
-        // Start polling for current track (every 500ms)
-        updateInterval = setInterval(updateActiveTrack, 500);
-
-        // Initial update
-        setTimeout(updateActiveTrack, 500);
       }
 
-      function onPlayerStateChange(event) {
-        console.log('Player state changed:', event.data);
-        // Update immediately when state changes
-        updateActiveTrack();
-      }
-
-      // Clean up interval when page unloads
-      window.addEventListener('beforeunload', function () {
-        if (updateInterval) {
-          clearInterval(updateInterval);
+      // Create new player
+      player = new YT.Player('youtube-player', {
+        height: '315',
+        width: '560',
+        playerVars: {
+          listType: 'playlist',
+          list: playlistId,
+          enablejsapi: 1
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
         }
       });
 
-      // Initialize on page load
-      document.addEventListener('DOMContentLoaded', initializeUI);
+      playerInitialized = true;
+    }
+
+    // Setup track click handlers
+    function setupTrackClickHandlers() {
+      const trackItems = document.querySelectorAll('.track-item');
+      trackItems.forEach(trackItem => {
+        // Remove old listeners by cloning
+        const newTrackItem = trackItem.cloneNode(true);
+        trackItem.parentNode.replaceChild(newTrackItem, trackItem);
+
+        newTrackItem.addEventListener('click', function () {
+          const trackIndex = parseInt(this.getAttribute('data-index'));
+          console.log('Track clicked:', trackIndex);
+
+          // Play the selected track
+          if (player && player.playVideoAt) {
+            player.playVideoAt(trackIndex);
+          }
+        });
+      });
+    }
+
+    // Function to update active track highlight
+    function updateActiveTrack() {
+      if (!player || !player.getPlaylistIndex) return;
+
+      try {
+        const currentIndex = player.getPlaylistIndex();
+        const trackItems = document.querySelectorAll('.track-item');
+
+        // Remove active class from all tracks
+        trackItems.forEach(item => item.classList.remove('active'));
+
+        // Add active class to currently playing track
+        const currentTrack = document.querySelector(`.track-item[data-index="${currentIndex}"]`);
+        if (currentTrack) {
+          currentTrack.classList.add('active');
+
+          // Only scroll if the track has changed
+          if (currentIndex !== lastPlayingIndex) {
+            currentTrack.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            lastPlayingIndex = currentIndex;
+          }
+        }
+      } catch (error) {
+        // Silently handle errors (player might not be ready)
+      }
+    }
+
+    function onPlayerReady(event) {
+      console.log('Player ready');
+      setupTrackClickHandlers();
+
+      // Clear existing interval if any
+      if (updateInterval) {
+        clearInterval(updateInterval);
+      }
+
+      // Start polling for current track (every 500ms)
+      updateInterval = setInterval(updateActiveTrack, 500);
+
+      // Initial update
+      setTimeout(updateActiveTrack, 500);
+    }
+
+    function onPlayerStateChange(event) {
+      console.log('Player state changed:', event.data);
+      // Update immediately when state changes
+      updateActiveTrack();
+    }
+
+    // Clean up interval when page unloads
+    window.addEventListener('beforeunload', function () {
+      if (updateInterval) {
+        clearInterval(updateInterval);
+      }
+    });
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initializeUI);
   </script>
 </body>
 
