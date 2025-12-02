@@ -41,10 +41,14 @@
     }
 
     .quarter-selector {
-      display: flex;
+      display: none;
       gap: 0.75rem;
       margin-top: 1rem;
       flex-wrap: wrap;
+    }
+
+    .quarter-selector.visible {
+      display: flex;
     }
 
     .quarter-btn {
@@ -71,11 +75,20 @@
       font-weight: 600;
     }
 
-    .playlist-section {
+    .selection-status {
+      margin-top: 1.5rem;
       display: none;
     }
 
-    .playlist-section.active {
+    .selection-status.visible {
+      display: block;
+    }
+
+    .music-content {
+      display: none;
+    }
+
+    .music-content.visible {
       display: block;
     }
   </style>
@@ -109,30 +122,32 @@
             Each collection represents a musical journey through the quarter, featuring tracks across various genres and
             moods.</p>
 
+          <p style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Select a
+            year:</p>
+
           <!-- Year Selection -->
           <div class="year-selector">
-            <button class="year-btn active" data-year="2025">2025</button>
+            <button class="year-btn" data-year="2025">2025</button>
             <button class="year-btn" data-year="2023">2023</button>
           </div>
 
           <!-- Quarter Selection (dynamically populated) -->
           <div id="quarter-selector" class="quarter-selector"></div>
 
-          <p class="current-playlist" style="margin-top: 1.5rem;">
-            Currently selected: <strong><span id="selected-playlist">2025 Q3 Playlist</span></strong>
+          <p id="selection-status" class="current-playlist selection-status">
+            Currently selected: <strong><span id="selected-playlist"></span></strong>
           </p>
         </div>
       </div>
     </section>
 
-    <section class="music-content">
+    <section id="music-content" class="music-content">
       <div class="container">
         <div class="playlist-grid">
           <div class="video-container">
             <div class="video-wrapper">
-              <iframe id="youtube-player" width="560" height="315"
-                src="https://www.youtube.com/embed/videoseries?list=PLo5Dkz0iHmDjyhVfhAOGAzSgviW63XW2Y&enablejsapi=1"
-                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <iframe id="youtube-player" width="560" height="315" src="" frameborder="0"
+                allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
           </div>
 
@@ -161,16 +176,16 @@
           id: "PLo5Dkz0iHmDjyhVfhAOGAzSgviW63XW2Y",
           name: "2025 Q3 Playlist",
           tracks: [
-            "Track 1",
-            "Track 2",
-            "Track 3",
-            "Track 4",
-            "Track 5",
-            "Track 6",
-            "Track 7",
-            "Track 8",
-            "Track 9",
-            "Track 10"
+            "Κοινοί Θνητοί - Γινόμενο",
+            "Track 2 - Please update with actual names",
+            "Track 3 - Please update with actual names",
+            "Track 4 - Please update with actual names",
+            "Track 5 - Please update with actual names",
+            "Track 6 - Please update with actual names",
+            "Track 7 - Please update with actual names",
+            "Track 8 - Please update with actual names",
+            "Track 9 - Please update with actual names",
+            "Track 10 - Please update with actual names"
           ]
         }
       },
@@ -206,8 +221,8 @@
     let isAPIReady = false;
     let updateInterval;
     let lastPlayingIndex = -1;
-    let currentYear = "2025";
-    let currentQuarter = "Q3";
+    let currentYear = null;
+    let currentQuarter = null;
 
     // Load YouTube IFrame API
     const tag = document.createElement('script');
@@ -217,8 +232,6 @@
 
     // Initialize UI
     function initializeUI() {
-      updateQuarterButtons(currentYear);
-      loadPlaylist(currentYear, currentQuarter);
       setupYearButtons();
     }
 
@@ -233,15 +246,23 @@
           yearButtons.forEach(b => b.classList.remove('active'));
           this.classList.add('active');
 
-          // Update current year and show quarters
+          // Update current year
           currentYear = year;
+
+          // Show and update quarter buttons
           updateQuarterButtons(year);
 
           // Auto-select first available quarter
           const quarters = Object.keys(playlists[year]);
           if (quarters.length > 0) {
             currentQuarter = quarters[0];
-            loadPlaylist(year, currentQuarter);
+            // Trigger click on first quarter button to load playlist
+            setTimeout(() => {
+              const firstQuarterBtn = document.querySelector('.quarter-btn');
+              if (firstQuarterBtn) {
+                firstQuarterBtn.click();
+              }
+            }, 0);
           }
         });
       });
@@ -251,6 +272,7 @@
     function updateQuarterButtons(year) {
       const quarterSelector = document.getElementById('quarter-selector');
       quarterSelector.innerHTML = '';
+      quarterSelector.classList.add('visible');
 
       const quarters = playlists[year];
       if (!quarters) return;
@@ -260,10 +282,6 @@
         btn.className = 'quarter-btn';
         btn.textContent = quarter;
         btn.dataset.quarter = quarter;
-
-        if (quarter === currentQuarter) {
-          btn.classList.add('active');
-        }
 
         btn.addEventListener('click', function () {
           const quarterBtns = document.querySelectorAll('.quarter-btn');
@@ -283,7 +301,13 @@
       const playlist = playlists[year][quarter];
       if (!playlist) return;
 
-      // Update selected playlist text
+      // Show the music content section
+      const musicContent = document.getElementById('music-content');
+      musicContent.classList.add('visible');
+
+      // Show and update selected playlist text
+      const selectionStatus = document.getElementById('selection-status');
+      selectionStatus.classList.add('visible');
       document.getElementById('selected-playlist').textContent = playlist.name;
 
       // Load tracks
@@ -309,6 +333,9 @@
       });
 
       // Load YouTube playlist
+      const iframe = document.getElementById('youtube-player');
+      const newSrc = `https://www.youtube.com/embed/videoseries?list=${playlist.id}&enablejsapi=1`;
+
       if (player && player.loadPlaylist) {
         player.loadPlaylist({
           list: playlist.id,
@@ -318,12 +345,13 @@
         lastPlayingIndex = -1;
       } else {
         // Update iframe source
-        const iframe = document.getElementById('youtube-player');
-        iframe.src = `https://www.youtube.com/embed/videoseries?list=${playlist.id}&enablejsapi=1`;
+        iframe.src = newSrc;
       }
 
       // Re-setup click handlers for tracks
-      setupTrackClickHandlers();
+      setTimeout(() => {
+        setupTrackClickHandlers();
+      }, 500);
     }
 
     // Setup track click handlers
