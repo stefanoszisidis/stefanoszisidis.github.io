@@ -146,8 +146,7 @@
         <div class="playlist-grid">
           <div class="video-container">
             <div class="video-wrapper">
-              <iframe id="youtube-player" width="560" height="315" src="" frameborder="0"
-                allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <div id="youtube-player"></div>
             </div>
           </div>
 
@@ -162,486 +161,321 @@
     </section>
   </main>
 
-  <!DOCTYPE html>
-  <html lang="en">
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2025 RunTheCode.gr Team</p>
+    </div>
+  </footer>
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music - RunTheCode.gr</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <style>
-      /* Additional styles for playlist selection */
-      .year-selector {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-      }
-
-      .year-btn {
-        padding: 0.75rem 1.5rem;
-        background-color: rgba(56, 189, 248, 0.1);
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        color: var(--text-secondary);
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-weight: 500;
-      }
-
-      .year-btn:hover {
-        background-color: rgba(56, 189, 248, 0.2);
-        border-color: var(--accent-primary);
-      }
-
-      .year-btn.active {
-        background-color: var(--accent-primary);
-        border-color: var(--accent-primary);
-        color: var(--bg-body);
-      }
-
-      .quarter-selector {
-        display: none;
-        gap: 0.75rem;
-        margin-top: 1rem;
-        flex-wrap: wrap;
-      }
-
-      .quarter-selector.visible {
-        display: flex;
-      }
-
-      .quarter-btn {
-        padding: 0.5rem 1rem;
-        background-color: var(--bg-body);
-        border: 1px solid var(--border-color);
-        border-radius: 4px;
-        color: var(--text-secondary);
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-size: 0.9rem;
-      }
-
-      .quarter-btn:hover {
-        background-color: rgba(56, 189, 248, 0.1);
-        border-color: var(--accent-primary);
-        color: var(--text-primary);
-      }
-
-      .quarter-btn.active {
-        background-color: rgba(56, 189, 248, 0.15);
-        border-color: var(--accent-primary);
-        color: var(--accent-primary);
-        font-weight: 600;
-      }
-
-      .selection-status {
-        margin-top: 1.5rem;
-        display: none;
-      }
-
-      .selection-status.visible {
-        display: block;
-      }
-
-      .music-content {
-        display: none;
-      }
-
-      .music-content.visible {
-        display: block;
-      }
-    </style>
-  </head>
-
-  <body>
-    <header class="site-header">
-      <div class="container">
-        <a href="index.html" class="site-title">RunTheCode.gr</a>
-        <nav class="breadcrumb">
-          <a href="index.html">Home</a>
-          <span class="separator">/</span>
-          <span class="current">Music</span>
-        </nav>
-      </div>
-    </header>
-
-    <main>
-      <section class="music-hero">
-        <div class="container">
-          <h1>Music</h1>
-          <p class="music-subtitle">Curated quarterly playlists featuring handpicked tracks</p>
-        </div>
-      </section>
-
-      <section class="playlist-info">
-        <div class="container">
-          <div class="info-card">
-            <h2>Quarterly Music Collections</h2>
-            <p>Every three months, I curate a special playlist of songs that resonated with me during that period.
-              Each collection represents a musical journey through the quarter, featuring tracks across various genres
-              and
-              moods.</p>
-
-            <p style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Select a
-              year:</p>
-
-            <!-- Year Selection -->
-            <div class="year-selector">
-              <button class="year-btn" data-year="2025">2025</button>
-              <button class="year-btn" data-year="2023">2023</button>
-            </div>
-
-            <!-- Quarter Selection (dynamically populated) -->
-            <div id="quarter-selector" class="quarter-selector"></div>
-
-            <p id="selection-status" class="current-playlist selection-status">
-              Currently selected: <strong><span id="selected-playlist"></span></strong>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="music-content" class="music-content">
-        <div class="container">
-          <div class="playlist-grid">
-            <div class="video-container">
-              <div class="video-wrapper">
-                <iframe id="youtube-player" width="560" height="315" src="" frameborder="0"
-                  allow="autoplay; encrypted-media" allowfullscreen></iframe>
-              </div>
-            </div>
-
-            <div class="tracklist-container">
-              <h3>Tracklist</h3>
-              <div id="tracklist" class="tracklist">
-                <!-- Tracks will be dynamically loaded -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container">
-        <p>&copy; 2025 RunTheCode.gr Team</p>
-      </div>
-    </footer>
-
-    <script>
-      // Playlist data structure
-      const playlists = {
-        "2025": {
-          "Q3": {
-            id: "PLo5Dkz0iHmDjyhVfhAOGAzSgviW63XW2Y",
-            name: "2025 Q3 Playlist",
-            tracks: [
-              "Κοινοί Θνητοί - Γινόμενο",
-              "Track 2 - Please update with actual names",
-              "Track 3 - Please update with actual names",
-              "Track 4 - Please update with actual names",
-              "Track 5 - Please update with actual names",
-              "Track 6 - Please update with actual names",
-              "Track 7 - Please update with actual names",
-              "Track 8 - Please update with actual names",
-              "Track 9 - Please update with actual names",
-              "Track 10 - Please update with actual names"
-            ]
-          }
-        },
-        "2023": {
-          "Q1": {
-            id: "PLo5Dkz0iHmDiCw7fQ3vY3V5Sb7Z26VlQO",
-            name: "2023 Q1 Playlist",
-            tracks: [
-              "Kowloon - Wake Up",
-              "Everything But The Girl - Nothing Left To Lose",
-              "Lidj Incorporated - General Penitentiary",
-              "Vasilis Kostas - To Horio (The Village)",
-              "Cable Ties - Say What You Mean",
-              "Sleaford Mods - UK GRIM",
-              "Young Fathers - Tell Somebody",
-              "Young Fathers - Rice",
-              "Jan Van Angelopoulos & Fotis Siotas - Watching it from Distance",
-              "Pavlos Pavlidis - I Mairi",
-              "Deaf Radio - Arsenal of Hope",
-              "Luude & Issey Cross - Oh My",
-              "Rival Sons - Bird In The Hand",
-              "Fontaines D.C. - 'Cello Song",
-              "Slomosa - There is Nothing New Under the Sun",
-              "Track 16",
-              "Track 17"
-            ]
-          }
+  <script>
+    // Playlist data structure
+    const playlists = {
+      "2025": {
+        "Q3": {
+          id: "PLo5Dkz0iHmDjyhVfhAOGAzSgviW63XW2Y",
+          name: "2025 Q3 Playlist",
+          tracks: [
+            "Κοινοί Θνητοί - Γινόμενο",
+            "Track 2 - Please update with actual names",
+            "Track 3 - Please update with actual names",
+            "Track 4 - Please update with actual names",
+            "Track 5 - Please update with actual names",
+            "Track 6 - Please update with actual names",
+            "Track 7 - Please update with actual names",
+            "Track 8 - Please update with actual names",
+            "Track 9 - Please update with actual names",
+            "Track 10 - Please update with actual names"
+          ]
         }
-      };
-
-      // YouTube IFrame API
-      let player = null;
-      let isAPIReady = false;
-      let updateInterval = null;
-      let lastPlayingIndex = -1;
-      let currentYear = null;
-      let currentQuarter = null;
-      let playerInitialized = false;
-
-      // Load YouTube IFrame API
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-      // Called when API is ready (global callback required by YouTube API)
-      function onYouTubeIframeAPIReady() {
-        isAPIReady = true;
-        console.log('YouTube API ready');
-      }
-
-      // Initialize UI
-      function initializeUI() {
-        setupYearButtons();
-      }
-
-      // Setup year button handlers
-      function setupYearButtons() {
-        const yearButtons = document.querySelectorAll('.year-btn');
-        yearButtons.forEach(btn => {
-          btn.addEventListener('click', function () {
-            const year = this.dataset.year;
-
-            // Update active state
-            yearButtons.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-
-            // Update current year
-            currentYear = year;
-
-            // Show and update quarter buttons
-            updateQuarterButtons(year);
-
-            // Auto-select first available quarter
-            const quarters = Object.keys(playlists[year]);
-            if (quarters.length > 0) {
-              currentQuarter = quarters[0];
-              // Trigger click on first quarter button to load playlist
-              setTimeout(() => {
-                const firstQuarterBtn = document.querySelector('.quarter-btn');
-                if (firstQuarterBtn) {
-                  firstQuarterBtn.click();
-                }
-              }, 0);
-            }
-          });
-        });
-      }
-
-      // Update quarter buttons based on selected year
-      function updateQuarterButtons(year) {
-        const quarterSelector = document.getElementById('quarter-selector');
-        quarterSelector.innerHTML = '';
-        quarterSelector.classList.add('visible');
-
-        const quarters = playlists[year];
-        if (!quarters) return;
-
-        Object.keys(quarters).forEach((quarter, index) => {
-          const btn = document.createElement('button');
-          btn.className = 'quarter-btn';
-          btn.textContent = quarter;
-          btn.dataset.quarter = quarter;
-
-          btn.addEventListener('click', function () {
-            const quarterBtns = document.querySelectorAll('.quarter-btn');
-            quarterBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-
-            currentQuarter = quarter;
-            loadPlaylist(currentYear, quarter);
-          });
-
-          quarterSelector.appendChild(btn);
-        });
-      }
-
-      // Load a specific playlist
-      function loadPlaylist(year, quarter) {
-        const playlist = playlists[year][quarter];
-        if (!playlist) return;
-
-        console.log('Loading playlist:', playlist.name);
-
-        // Show the music content section
-        const musicContent = document.getElementById('music-content');
-        musicContent.classList.add('visible');
-
-        // Show and update selected playlist text
-        const selectionStatus = document.getElementById('selection-status');
-        selectionStatus.classList.add('visible');
-        document.getElementById('selected-playlist').textContent = playlist.name;
-
-        // Load tracks
-        const tracklistDiv = document.getElementById('tracklist');
-        tracklistDiv.innerHTML = '';
-
-        playlist.tracks.forEach((track, index) => {
-          const trackItem = document.createElement('div');
-          trackItem.className = 'track-item';
-          trackItem.dataset.index = index;
-
-          const trackNumber = document.createElement('span');
-          trackNumber.className = 'track-number';
-          trackNumber.textContent = String(index + 1).padStart(2, '0');
-
-          const trackName = document.createElement('span');
-          trackName.className = 'track-name';
-          trackName.textContent = track;
-
-          trackItem.appendChild(trackNumber);
-          trackItem.appendChild(trackName);
-          tracklistDiv.appendChild(trackItem);
-        });
-
-        // Reset last playing index when changing playlists
-        lastPlayingIndex = -1;
-
-        // Initialize or update the player
-        if (!playerInitialized) {
-          // First time - create the player
-          initializePlayer(playlist.id);
-        } else if (player && player.loadPlaylist) {
-          // Player exists - just load new playlist
-          console.log('Loading new playlist in existing player');
-          player.loadPlaylist({
-            list: playlist.id,
-            listType: 'playlist',
-            index: 0
-          });
-          setupTrackClickHandlers();
+      },
+      "2023": {
+        "Q1": {
+          id: "PLo5Dkz0iHmDiCw7fQ3vY3V5Sb7Z26VlQO",
+          name: "2023 Q1 Playlist",
+          tracks: [
+            "Kowloon - Wake Up",
+            "Everything But The Girl - Nothing Left To Lose",
+            "Lidj Incorporated - General Penitentiary",
+            "Vasilis Kostas - To Horio (The Village)",
+            "Cable Ties - Say What You Mean",
+            "Sleaford Mods - UK GRIM",
+            "Young Fathers - Tell Somebody",
+            "Young Fathers - Rice",
+            "Jan Van Angelopoulos & Fotis Siotas - Watching it from Distance",
+            "Pavlos Pavlidis - I Mairi",
+            "Deaf Radio - Arsenal of Hope",
+            "Luude & Issey Cross - Oh My",
+            "Rival Sons - Bird In The Hand",
+            "Fontaines D.C. - 'Cello Song",
+            "Slomosa - There is Nothing New Under the Sun",
+            "Track 16",
+            "Track 17"
+          ]
         }
       }
+    };
 
-      // Initialize the YouTube player
-      function initializePlayer(playlistId) {
-        console.log('Initializing player with playlist:', playlistId);
+    // YouTube IFrame API
+    let player = null;
+    let isAPIReady = false;
+    let updateInterval = null;
+    let lastPlayingIndex = -1;
+    let currentYear = null;
+    let currentQuarter = null;
+    let playerInitialized = false;
 
-        // Wait for API if not ready
-        if (!isAPIReady) {
-          console.log('Waiting for YouTube API...');
-          setTimeout(() => initializePlayer(playlistId), 200);
-          return;
-        }
+    // Load YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // Destroy existing player if any
-        if (player) {
-          try {
-            player.destroy();
-          } catch (e) {
-            console.log('Error destroying player:', e);
-          }
-        }
+    // Called when API is ready (global callback required by YouTube API)
+    function onYouTubeIframeAPIReady() {
+      isAPIReady = true;
+      console.log('YouTube API ready');
+    }
 
-        // Create new player
-        player = new YT.Player('youtube-player', {
-          height: '315',
-          width: '560',
-          playerVars: {
-            listType: 'playlist',
-            list: playlistId,
-            enablejsapi: 1
-          },
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
+    // Initialize UI
+    function initializeUI() {
+      setupYearButtons();
+    }
+
+    // Setup year button handlers
+    function setupYearButtons() {
+      const yearButtons = document.querySelectorAll('.year-btn');
+      yearButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+          const year = this.dataset.year;
+
+          // Update active state
+          yearButtons.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+
+          // Update current year
+          currentYear = year;
+
+          // Show and update quarter buttons
+          updateQuarterButtons(year);
+
+          // Auto-select first available quarter
+          const quarters = Object.keys(playlists[year]);
+          if (quarters.length > 0) {
+            currentQuarter = quarters[0];
+            // Trigger click on first quarter button to load playlist
+            setTimeout(() => {
+              const firstQuarterBtn = document.querySelector('.quarter-btn');
+              if (firstQuarterBtn) {
+                firstQuarterBtn.click();
+              }
+            }, 0);
           }
         });
+      });
+    }
 
-        playerInitialized = true;
-      }
+    // Update quarter buttons based on selected year
+    function updateQuarterButtons(year) {
+      const quarterSelector = document.getElementById('quarter-selector');
+      quarterSelector.innerHTML = '';
+      quarterSelector.classList.add('visible');
 
-      // Setup track click handlers
-      function setupTrackClickHandlers() {
-        const trackItems = document.querySelectorAll('.track-item');
-        trackItems.forEach(trackItem => {
-          // Remove old listeners by cloning
-          const newTrackItem = trackItem.cloneNode(true);
-          trackItem.parentNode.replaceChild(newTrackItem, trackItem);
+      const quarters = playlists[year];
+      if (!quarters) return;
 
-          newTrackItem.addEventListener('click', function () {
-            const trackIndex = parseInt(this.getAttribute('data-index'));
-            console.log('Track clicked:', trackIndex);
+      Object.keys(quarters).forEach((quarter, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'quarter-btn';
+        btn.textContent = quarter;
+        btn.dataset.quarter = quarter;
 
-            // Play the selected track
-            if (player && player.playVideoAt) {
-              player.playVideoAt(trackIndex);
-            }
-          });
+        btn.addEventListener('click', function () {
+          const quarterBtns = document.querySelectorAll('.quarter-btn');
+          quarterBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+
+          currentQuarter = quarter;
+          loadPlaylist(currentYear, quarter);
         });
-      }
 
-      // Function to update active track highlight
-      function updateActiveTrack() {
-        if (!player || !player.getPlaylistIndex) return;
+        quarterSelector.appendChild(btn);
+      });
+    }
 
-        try {
-          const currentIndex = player.getPlaylistIndex();
-          const trackItems = document.querySelectorAll('.track-item');
+    // Load a specific playlist
+    function loadPlaylist(year, quarter) {
+      const playlist = playlists[year][quarter];
+      if (!playlist) return;
 
-          // Remove active class from all tracks
-          trackItems.forEach(item => item.classList.remove('active'));
+      console.log('Loading playlist:', playlist.name);
 
-          // Add active class to currently playing track
-          const currentTrack = document.querySelector(`.track-item[data-index="${currentIndex}"]`);
-          if (currentTrack) {
-            currentTrack.classList.add('active');
+      // Show the music content section
+      const musicContent = document.getElementById('music-content');
+      musicContent.classList.add('visible');
 
-            // Only scroll if the track has changed
-            if (currentIndex !== lastPlayingIndex) {
-              currentTrack.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-              lastPlayingIndex = currentIndex;
-            }
-          }
-        } catch (error) {
-          // Silently handle errors (player might not be ready)
-        }
-      }
+      // Show and update selected playlist text
+      const selectionStatus = document.getElementById('selection-status');
+      selectionStatus.classList.add('visible');
+      document.getElementById('selected-playlist').textContent = playlist.name;
 
-      function onPlayerReady(event) {
-        console.log('Player ready');
+      // Load tracks
+      const tracklistDiv = document.getElementById('tracklist');
+      tracklistDiv.innerHTML = '';
+
+      playlist.tracks.forEach((track, index) => {
+        const trackItem = document.createElement('div');
+        trackItem.className = 'track-item';
+        trackItem.dataset.index = index;
+
+        const trackNumber = document.createElement('span');
+        trackNumber.className = 'track-number';
+        trackNumber.textContent = String(index + 1).padStart(2, '0');
+
+        const trackName = document.createElement('span');
+        trackName.className = 'track-name';
+        trackName.textContent = track;
+
+        trackItem.appendChild(trackNumber);
+        trackItem.appendChild(trackName);
+        tracklistDiv.appendChild(trackItem);
+      });
+
+      // Reset last playing index when changing playlists
+      lastPlayingIndex = -1;
+
+      // Initialize or update the player
+      if (!playerInitialized) {
+        // First time - create the player
+        initializePlayer(playlist.id);
+      } else if (player && player.loadPlaylist) {
+        // Player exists - just load new playlist
+        console.log('Loading new playlist in existing player');
+        player.loadPlaylist({
+          list: playlist.id,
+          listType: 'playlist',
+          index: 0
+        });
         setupTrackClickHandlers();
+      }
+    }
 
-        // Clear existing interval if any
-        if (updateInterval) {
-          clearInterval(updateInterval);
+    // Initialize the YouTube player
+    function initializePlayer(playlistId) {
+      console.log('Initializing player with playlist:', playlistId);
+
+      // Wait for API if not ready
+      if (!isAPIReady) {
+        console.log('Waiting for YouTube API...');
+        setTimeout(() => initializePlayer(playlistId), 200);
+        return;
+      }
+
+      // Destroy existing player if any
+      if (player) {
+        try {
+          player.destroy();
+        } catch (e) {
+          console.log('Error destroying player:', e);
         }
-
-        // Start polling for current track (every 500ms)
-        updateInterval = setInterval(updateActiveTrack, 500);
-
-        // Initial update
-        setTimeout(updateActiveTrack, 500);
       }
 
-      function onPlayerStateChange(event) {
-        console.log('Player state changed:', event.data);
-        // Update immediately when state changes
-        updateActiveTrack();
-      }
-
-      // Clean up interval when page unloads
-      window.addEventListener('beforeunload', function () {
-        if (updateInterval) {
-          clearInterval(updateInterval);
+      // Create new player
+      player = new YT.Player('youtube-player', {
+        height: '315',
+        width: '560',
+        playerVars: {
+          listType: 'playlist',
+          list: playlistId,
+          enablejsapi: 1
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
         }
       });
 
-      // Initialize on page load
-      document.addEventListener('DOMContentLoaded', initializeUI);
-    </script>
-  </body>
+      playerInitialized = true;
+    }
 
-  </html>
+    // Setup track click handlers
+    function setupTrackClickHandlers() {
+      const trackItems = document.querySelectorAll('.track-item');
+      trackItems.forEach(trackItem => {
+        // Remove old listeners by cloning
+        const newTrackItem = trackItem.cloneNode(true);
+        trackItem.parentNode.replaceChild(newTrackItem, trackItem);
+
+        newTrackItem.addEventListener('click', function () {
+          const trackIndex = parseInt(this.getAttribute('data-index'));
+          console.log('Track clicked:', trackIndex);
+
+          // Play the selected track
+          if (player && player.playVideoAt) {
+            player.playVideoAt(trackIndex);
+          }
+        });
+      });
+    }
+
+    // Function to update active track highlight
+    function updateActiveTrack() {
+      if (!player || !player.getPlaylistIndex) return;
+
+      try {
+        const currentIndex = player.getPlaylistIndex();
+        const trackItems = document.querySelectorAll('.track-item');
+
+        // Remove active class from all tracks
+        trackItems.forEach(item => item.classList.remove('active'));
+
+        // Add active class to currently playing track
+        const currentTrack = document.querySelector(`.track-item[data-index="${currentIndex}"]`);
+        if (currentTrack) {
+          currentTrack.classList.add('active');
+
+          // Only scroll if the track has changed
+          if (currentIndex !== lastPlayingIndex) {
+            currentTrack.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            lastPlayingIndex = currentIndex;
+          }
+        }
+      } catch (error) {
+        // Silently handle errors (player might not be ready)
+      }
+    }
+
+    function onPlayerReady(event) {
+      console.log('Player ready');
+      setupTrackClickHandlers();
+
+      // Clear existing interval if any
+      if (updateInterval) {
+        clearInterval(updateInterval);
+      }
+
+      // Start polling for current track (every 500ms)
+      updateInterval = setInterval(updateActiveTrack, 500);
+
+      // Initial update
+      setTimeout(updateActiveTrack, 500);
+    }
+
+    function onPlayerStateChange(event) {
+      console.log('Player state changed:', event.data);
+      // Update immediately when state changes
+      updateActiveTrack();
+    }
+
+    // Clean up interval when page unloads
+    window.addEventListener('beforeunload', function () {
+      if (updateInterval) {
+        clearInterval(updateInterval);
+      }
+    });
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initializeUI);
+  </script>
+</body>
+
+</html>
