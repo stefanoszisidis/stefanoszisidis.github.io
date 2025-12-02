@@ -9,6 +9,76 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Additional styles for playlist selection */
+    .year-selector {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .year-btn {
+      padding: 0.75rem 1.5rem;
+      background-color: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .year-btn:hover {
+      background-color: rgba(56, 189, 248, 0.2);
+      border-color: var(--accent-primary);
+    }
+
+    .year-btn.active {
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+      color: var(--bg-body);
+    }
+
+    .quarter-selector {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .quarter-btn {
+      padding: 0.5rem 1rem;
+      background-color: var(--bg-body);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+    }
+
+    .quarter-btn:hover {
+      background-color: rgba(56, 189, 248, 0.1);
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+    }
+
+    .quarter-btn.active {
+      background-color: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    .playlist-section {
+      display: none;
+    }
+
+    .playlist-section.active {
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
@@ -36,10 +106,21 @@
         <div class="info-card">
           <h2>Quarterly Music Collections</h2>
           <p>Every three months, I curate a special playlist of songs that resonated with me during that period.
-            Each
-            collection represents a musical journey through the quarter, featuring tracks across various genres and
+            Each collection represents a musical journey through the quarter, featuring tracks across various genres and
             moods.</p>
-          <p class="current-playlist">Currently featured: <strong>2023 Q1 Playlist</strong></p>
+
+          <!-- Year Selection -->
+          <div class="year-selector">
+            <button class="year-btn active" data-year="2025">2025</button>
+            <button class="year-btn" data-year="2023">2023</button>
+          </div>
+
+          <!-- Quarter Selection (dynamically populated) -->
+          <div id="quarter-selector" class="quarter-selector"></div>
+
+          <p class="current-playlist" style="margin-top: 1.5rem;">
+            Currently selected: <strong><span id="selected-playlist">2025 Q3 Playlist</span></strong>
+          </p>
         </div>
       </div>
     </section>
@@ -50,82 +131,15 @@
           <div class="video-container">
             <div class="video-wrapper">
               <iframe id="youtube-player" width="560" height="315"
-                src="https://www.youtube.com/embed/videoseries?list=PLo5Dkz0iHmDiCw7fQ3vY3V5Sb7Z26VlQO&enablejsapi=1"
+                src="https://www.youtube.com/embed/videoseries?list=PLo5Dkz0iHmDjyhVfhAOGAzSgviW63XW2Y&enablejsapi=1"
                 frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
           </div>
 
           <div class="tracklist-container">
             <h3>Tracklist</h3>
-            <div class="tracklist">
-              <div class="track-item" data-index="0">
-                <span class="track-number">01</span>
-                <span class="track-name">Kowloon - Wake Up</span>
-              </div>
-              <div class="track-item" data-index="1">
-                <span class="track-number">02</span>
-                <span class="track-name">Everything But The Girl - Nothing Left To Lose</span>
-              </div>
-              <div class="track-item" data-index="2">
-                <span class="track-number">03</span>
-                <span class="track-name">Lidj Incorporated - General Penitentiary</span>
-              </div>
-              <div class="track-item" data-index="3">
-                <span class="track-number">04</span>
-                <span class="track-name">Vasilis Kostas - To Horio (The Village)</span>
-              </div>
-              <div class="track-item" data-index="4">
-                <span class="track-number">05</span>
-                <span class="track-name">Cable Ties - Say What You Mean</span>
-              </div>
-              <div class="track-item" data-index="5">
-                <span class="track-number">06</span>
-                <span class="track-name">Sleaford Mods - UK GRIM</span>
-              </div>
-              <div class="track-item" data-index="6">
-                <span class="track-number">07</span>
-                <span class="track-name">Young Fathers - Tell Somebody</span>
-              </div>
-              <div class="track-item" data-index="7">
-                <span class="track-number">08</span>
-                <span class="track-name">Young Fathers - Rice</span>
-              </div>
-              <div class="track-item" data-index="8">
-                <span class="track-number">09</span>
-                <span class="track-name">Jan Van Angelopoulos & Fotis Siotas - Watching it from Distance</span>
-              </div>
-              <div class="track-item" data-index="9">
-                <span class="track-number">10</span>
-                <span class="track-name">Pavlos Pavlidis - I Mairi</span>
-              </div>
-              <div class="track-item" data-index="10">
-                <span class="track-number">11</span>
-                <span class="track-name">Deaf Radio - Arsenal of Hope</span>
-              </div>
-              <div class="track-item" data-index="11">
-                <span class="track-number">12</span>
-                <span class="track-name">Luude & Issey Cross - Oh My</span>
-              </div>
-              <div class="track-item" data-index="12">
-                <span class="track-number">13</span>
-                <span class="track-name">Rival Sons - Bird In The Hand</span>
-              </div>
-              <div class="track-item" data-index="13">
-                <span class="track-number">14</span>
-                <span class="track-name">Fontaines D.C. - 'Cello Song</span>
-              </div>
-              <div class="track-item" data-index="14">
-                <span class="track-number">15</span>
-                <span class="track-name">Slomosa - There is Nothing New Under the Sun</span>
-              </div>
-              <div class="track-item" data-index="15">
-                <span class="track-number">16</span>
-                <span class="track-name">Track 16</span>
-              </div>
-              <div class="track-item" data-index="16">
-                <span class="track-number">17</span>
-                <span class="track-name">Track 17</span>
-              </div>
+            <div id="tracklist" class="tracklist">
+              <!-- Tracks will be dynamically loaded -->
             </div>
           </div>
         </div>
@@ -140,17 +154,192 @@
   </footer>
 
   <script>
+    // Playlist data structure
+    const playlists = {
+      "2025": {
+        "Q3": {
+          id: "PLo5Dkz0iHmDjyhVfhAOGAzSgviW63XW2Y",
+          name: "2025 Q3 Playlist",
+          tracks: [
+            "Track 1",
+            "Track 2",
+            "Track 3",
+            "Track 4",
+            "Track 5",
+            "Track 6",
+            "Track 7",
+            "Track 8",
+            "Track 9",
+            "Track 10"
+          ]
+        }
+      },
+      "2023": {
+        "Q1": {
+          id: "PLo5Dkz0iHmDiCw7fQ3vY3V5Sb7Z26VlQO",
+          name: "2023 Q1 Playlist",
+          tracks: [
+            "Kowloon - Wake Up",
+            "Everything But The Girl - Nothing Left To Lose",
+            "Lidj Incorporated - General Penitentiary",
+            "Vasilis Kostas - To Horio (The Village)",
+            "Cable Ties - Say What You Mean",
+            "Sleaford Mods - UK GRIM",
+            "Young Fathers - Tell Somebody",
+            "Young Fathers - Rice",
+            "Jan Van Angelopoulos & Fotis Siotas - Watching it from Distance",
+            "Pavlos Pavlidis - I Mairi",
+            "Deaf Radio - Arsenal of Hope",
+            "Luude & Issey Cross - Oh My",
+            "Rival Sons - Bird In The Hand",
+            "Fontaines D.C. - 'Cello Song",
+            "Slomosa - There is Nothing New Under the Sun",
+            "Track 16",
+            "Track 17"
+          ]
+        }
+      }
+    };
+
     // YouTube IFrame API
     let player;
     let isAPIReady = false;
     let updateInterval;
     let lastPlayingIndex = -1;
+    let currentYear = "2025";
+    let currentQuarter = "Q3";
 
     // Load YouTube IFrame API
     const tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
     const firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // Initialize UI
+    function initializeUI() {
+      updateQuarterButtons(currentYear);
+      loadPlaylist(currentYear, currentQuarter);
+      setupYearButtons();
+    }
+
+    // Setup year button handlers
+    function setupYearButtons() {
+      const yearButtons = document.querySelectorAll('.year-btn');
+      yearButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+          const year = this.dataset.year;
+
+          // Update active state
+          yearButtons.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+
+          // Update current year and show quarters
+          currentYear = year;
+          updateQuarterButtons(year);
+
+          // Auto-select first available quarter
+          const quarters = Object.keys(playlists[year]);
+          if (quarters.length > 0) {
+            currentQuarter = quarters[0];
+            loadPlaylist(year, currentQuarter);
+          }
+        });
+      });
+    }
+
+    // Update quarter buttons based on selected year
+    function updateQuarterButtons(year) {
+      const quarterSelector = document.getElementById('quarter-selector');
+      quarterSelector.innerHTML = '';
+
+      const quarters = playlists[year];
+      if (!quarters) return;
+
+      Object.keys(quarters).forEach((quarter, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'quarter-btn';
+        btn.textContent = quarter;
+        btn.dataset.quarter = quarter;
+
+        if (quarter === currentQuarter) {
+          btn.classList.add('active');
+        }
+
+        btn.addEventListener('click', function () {
+          const quarterBtns = document.querySelectorAll('.quarter-btn');
+          quarterBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+
+          currentQuarter = quarter;
+          loadPlaylist(currentYear, quarter);
+        });
+
+        quarterSelector.appendChild(btn);
+      });
+    }
+
+    // Load a specific playlist
+    function loadPlaylist(year, quarter) {
+      const playlist = playlists[year][quarter];
+      if (!playlist) return;
+
+      // Update selected playlist text
+      document.getElementById('selected-playlist').textContent = playlist.name;
+
+      // Load tracks
+      const tracklistDiv = document.getElementById('tracklist');
+      tracklistDiv.innerHTML = '';
+
+      playlist.tracks.forEach((track, index) => {
+        const trackItem = document.createElement('div');
+        trackItem.className = 'track-item';
+        trackItem.dataset.index = index;
+
+        const trackNumber = document.createElement('span');
+        trackNumber.className = 'track-number';
+        trackNumber.textContent = String(index + 1).padStart(2, '0');
+
+        const trackName = document.createElement('span');
+        trackName.className = 'track-name';
+        trackName.textContent = track;
+
+        trackItem.appendChild(trackNumber);
+        trackItem.appendChild(trackName);
+        tracklistDiv.appendChild(trackItem);
+      });
+
+      // Load YouTube playlist
+      if (player && player.loadPlaylist) {
+        player.loadPlaylist({
+          list: playlist.id,
+          listType: 'playlist',
+          index: 0
+        });
+        lastPlayingIndex = -1;
+      } else {
+        // Update iframe source
+        const iframe = document.getElementById('youtube-player');
+        iframe.src = `https://www.youtube.com/embed/videoseries?list=${playlist.id}&enablejsapi=1`;
+      }
+
+      // Re-setup click handlers for tracks
+      setupTrackClickHandlers();
+    }
+
+    // Setup track click handlers
+    function setupTrackClickHandlers() {
+      const trackItems = document.querySelectorAll('.track-item');
+      trackItems.forEach(trackItem => {
+        trackItem.addEventListener('click', function () {
+          const trackIndex = parseInt(this.getAttribute('data-index'));
+
+          // Play the selected track
+          if (player && player.playVideoAt) {
+            player.playVideoAt(trackIndex);
+          }
+        });
+      });
+    }
 
     // Function to update active track highlight
     function updateActiveTrack() {
@@ -191,20 +380,7 @@
     }
 
     function onPlayerReady(event) {
-      // Set up track click handlers
-      const trackItems = document.querySelectorAll('.track-item');
-      trackItems.forEach(trackItem => {
-        trackItem.addEventListener('click', function () {
-          const trackIndex = parseInt(this.getAttribute('data-index'));
-
-          // Play the selected track
-          if (player && player.playVideoAt) {
-            player.playVideoAt(trackIndex);
-          }
-
-          // Update will happen automatically via the interval
-        });
-      });
+      setupTrackClickHandlers();
 
       // Start polling for current track (every 500ms)
       updateInterval = setInterval(updateActiveTrack, 500);
@@ -223,13 +399,7 @@
       setTimeout(function () {
         if (!isAPIReady) {
           console.log('YouTube API not loaded, using basic functionality');
-          const trackItems = document.querySelectorAll('.track-item');
-          trackItems.forEach(trackItem => {
-            trackItem.addEventListener('click', function () {
-              trackItems.forEach(item => item.classList.remove('active'));
-              this.classList.add('active');
-            });
-          });
+          setupTrackClickHandlers();
         }
       }, 3000);
     });
@@ -240,6 +410,9 @@
         clearInterval(updateInterval);
       }
     });
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initializeUI);
   </script>
 </body>
 
