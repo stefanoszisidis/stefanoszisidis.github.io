@@ -265,11 +265,20 @@
         // Initialize UI only after data is loaded
         initializeUI();
 
+        // If API became ready while we were fetching data, checking here ensures nothing was missed
+        if (isAPIReady) {
+          console.log('API ready and Data loaded');
+        }
+
       } catch (error) {
         console.error('Error loading playlist data:', error);
         // Handle error (maybe show a message to user)
-        document.getElementById('selection-status').innerHTML = 'Error loading playlists. Please try refreshing.';
-        document.getElementById('selection-status').classList.add('visible');
+        const statusEl = document.getElementById('selection-status');
+        if (statusEl) {
+          statusEl.innerHTML = 'Error loading playlists. Please ensure you are viewing this via a local server (e.g. VS Code Live Server) or on GitHub Pages. Fetching local JSON files is blocked by browser security.';
+          statusEl.classList.add('visible');
+          statusEl.style.color = 'var(--accent-primary)'; // Make it stand out
+        }
       }
     }
 
