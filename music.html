@@ -275,9 +275,9 @@
         // Handle error (maybe show a message to user)
         const statusEl = document.getElementById('selection-status');
         if (statusEl) {
-          statusEl.innerHTML = 'Error loading playlists. Please ensure you are viewing this via a local server (e.g. VS Code Live Server) or on GitHub Pages. Fetching local JSON files is blocked by browser security.';
+          statusEl.innerHTML = `Error: ${error.name} - ${error.message} <br> Ensure <code>data/playlists.json</code> exists and is accessible.`;
           statusEl.classList.add('visible');
-          statusEl.style.color = 'var(--accent-primary)'; // Make it stand out
+          statusEl.style.color = 'var(--accent-primary)';
         }
       }
     }
