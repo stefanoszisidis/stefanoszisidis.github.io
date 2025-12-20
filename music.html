@@ -10,17 +10,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Additional styles for playlist selection */
-    .year-selector {
+    /* Flex container for playlist cards */
+    .playlist-info .container {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .info-card {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    /* Genre specific styles */
+    .genre-selector {
       display: flex;
       gap: 1rem;
       margin-bottom: 1.5rem;
       flex-wrap: wrap;
     }
 
-    .year-btn {
+    .genre-btn {
       padding: 0.75rem 1.5rem;
-      background-color: rgba(56, 189, 248, 0.1);
+      background-color: rgba(16, 185, 129, 0.1);
+      /* Green tint for genre */
       border: 1px solid var(--border-color);
       border-radius: 6px;
       color: var(--text-secondary);
@@ -29,67 +42,15 @@
       font-weight: 500;
     }
 
-    .year-btn:hover {
-      background-color: rgba(56, 189, 248, 0.2);
-      border-color: var(--accent-primary);
+    .genre-btn:hover {
+      background-color: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
     }
 
-    .year-btn.active {
-      background-color: var(--accent-primary);
-      border-color: var(--accent-primary);
+    .genre-btn.active {
+      background-color: #10b981;
+      border-color: #10b981;
       color: var(--bg-body);
-    }
-
-    .quarter-selector {
-      display: none;
-      gap: 0.75rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .quarter-selector.visible {
-      display: flex;
-    }
-
-    .quarter-btn {
-      padding: 0.5rem 1rem;
-      background-color: var(--bg-body);
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 0.9rem;
-    }
-
-    .quarter-btn:hover {
-      background-color: rgba(56, 189, 248, 0.1);
-      border-color: var(--accent-primary);
-      color: var(--text-primary);
-    }
-
-    .quarter-btn.active {
-      background-color: rgba(56, 189, 248, 0.15);
-      border-color: var(--accent-primary);
-      color: var(--accent-primary);
-      font-weight: 600;
-    }
-
-    .selection-status {
-      margin-top: 1.5rem;
-      display: none;
-    }
-
-    .selection-status.visible {
-      display: block;
-    }
-
-    .music-content {
-      display: none;
-    }
-
-    .music-content.visible {
-      display: block;
     }
   </style>
 </head>
@@ -116,11 +77,11 @@
 
     <section class="playlist-info">
       <div class="container">
+        <!-- Card 1: Quarterly Collections -->
         <div class="info-card">
           <h2>Quarterly Music Collections</h2>
           <p>Every three months, I curate a special playlist of songs that resonated with me during that period.
-            Each collection represents a musical journey through the quarter, featuring tracks across various genres and
-            moods.</p>
+            Each collection represents a musical journey through the quarter.</p>
 
           <p style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Select a
             year:</p>
@@ -136,6 +97,28 @@
 
           <p id="selection-status" class="current-playlist selection-status">
             Currently selected: <strong><span id="selected-playlist"></span></strong>
+          </p>
+        </div>
+
+        <!-- Card 2: Genre Based Playlists -->
+        <div class="info-card">
+          <h2>Genre Based Playlists</h2>
+          <p>Exploring specific sounds and vibes. These collections focus on deep dives into specific genres, bringing
+            together tracks that define a mood.</p>
+
+          <p style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Select a
+            genre:</p>
+
+          <!-- Genre Selection -->
+          <div class="genre-selector">
+            <button class="genre-btn" data-genre="Reggae">Reggae</button>
+          </div>
+
+          <!-- Genre Year Selection (dynamically populated) -->
+          <div id="genre-year-selector" class="quarter-selector"></div>
+
+          <p id="genre-selection-status" class="current-playlist selection-status">
+            Currently selected: <strong><span id="selected-genre-playlist"></span></strong>
           </p>
         </div>
       </div>
@@ -247,6 +230,28 @@
       }
     };
 
+    const genrePlaylists = {
+      "Reggae": {
+        "2024": {
+          id: "PLo5Dkz0iHmDjwVzHSo_SEjxKdK_X7LLde",
+          name: "2024 Reggae Playlist",
+          tracks: [
+            "Prince Fatty - Expansions ft. Shniece McMenamin",
+            "Savages Y Suefo - Our World Our Style",
+            "Roots Architects 01. 1000 Light Years",
+            "Protoje - Switch It Up (Official Video) ft. Original Koffee",
+            "Chronixx - \"Skankin' Sweet\" [Official Video] | Chronology",
+            "Chronixx - Here Comes Trouble (Official Music Video)",
+            "Samory I Ft. Lila Iké - Outside (Official Video)",
+            "Samory I - Crown (Lyric Video)",
+            "Major Lazer - Blaze Up The Fire (feat. Chronixx) [Official Lyric Video]",
+            "Back Bitter / SAMI-T From Mighty Crown",
+            "Skrillex & Damian \"Jr. Gong\" Marley - Make It Bun Dem [OFFICIAL VIDEO]"
+          ]
+        }
+      }
+    };
+
     // YouTube IFrame API
     let player = null;
     let isAPIReady = false;
@@ -271,6 +276,81 @@
     // Initialize UI
     function initializeUI() {
       setupYearButtons();
+      setupGenreButtons();
+    }
+
+    // Setup genre button handlers
+    function setupGenreButtons() {
+      const genreButtons = document.querySelectorAll('.genre-btn');
+      genreButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+          const genre = this.dataset.genre;
+
+          // Deactivate quarterly selection
+          document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
+          document.getElementById('quarter-selector').classList.remove('visible');
+          document.getElementById('selection-status').classList.remove('visible');
+
+          // Update active state
+          genreButtons.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+
+          // Update current genre
+          updateGenreYearButtons(genre);
+
+          // Auto-select first available year for this genre
+          const years = Object.keys(genrePlaylists[genre]);
+          if (years.length > 0) {
+            // Trigger click on first genre year button to load playlist
+            setTimeout(() => {
+              const firstYearBtn = document.querySelector('#genre-year-selector .quarter-btn');
+              if (firstYearBtn) {
+                firstYearBtn.click();
+              }
+            }, 0);
+          }
+        });
+      });
+    }
+
+    // Update genre year buttons
+    function updateGenreYearButtons(genre) {
+      const selector = document.getElementById('genre-year-selector');
+      selector.innerHTML = '';
+      selector.classList.add('visible');
+
+      const years = genrePlaylists[genre];
+      if (!years) return;
+
+      Object.keys(years).forEach((year, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'quarter-btn';
+        btn.textContent = year;
+        btn.dataset.year = year;
+
+        btn.addEventListener('click', function () {
+          // Deactivate normal quarterly buttons if any remain
+          document.querySelectorAll('.quarter-selector:not(#genre-year-selector) .quarter-btn').forEach(b => b.classList.remove('active'));
+
+          const btns = document.querySelectorAll('#genre-year-selector .quarter-btn');
+          btns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+
+          loadGenrePlaylist(genre, year);
+        });
+
+        selector.appendChild(btn);
+      });
+    }
+
+    function loadGenrePlaylist(genre, year) {
+      const playlist = genrePlaylists[genre][year];
+      if (!playlist) return;
+
+      // Reset quarterly selection text
+      document.getElementById('selected-playlist').textContent = "";
+
+      displayPlaylist(playlist, 'genre-selection-status', 'selected-genre-playlist');
     }
 
     // Setup year button handlers
@@ -279,6 +359,11 @@
       yearButtons.forEach(btn => {
         btn.addEventListener('click', function () {
           const year = this.dataset.year;
+
+          // Deactivate genre selection
+          document.querySelectorAll('.genre-btn').forEach(b => b.classList.remove('active'));
+          document.getElementById('genre-year-selector').classList.remove('visible');
+          document.getElementById('genre-selection-status').classList.remove('visible');
 
           // Update active state
           yearButtons.forEach(b => b.classList.remove('active'));
@@ -299,7 +384,7 @@
             currentQuarter = quarters[0];
             // Trigger click on first quarter button to load playlist
             setTimeout(() => {
-              const firstQuarterBtn = document.querySelector('.quarter-btn');
+              const firstQuarterBtn = document.querySelector('#quarter-selector .quarter-btn');
               if (firstQuarterBtn) {
                 firstQuarterBtn.click();
               }
@@ -337,11 +422,19 @@
       });
     }
 
-    // Load a specific playlist
+    // Load a specific playlist (Quarterly)
     function loadPlaylist(year, quarter) {
       const playlist = playlists[year][quarter];
       if (!playlist) return;
 
+      // Reset genre selection text
+      document.getElementById('selected-genre-playlist').textContent = "";
+
+      displayPlaylist(playlist, 'selection-status', 'selected-playlist');
+    }
+
+    // Shared function to display playlist
+    function displayPlaylist(playlist, statusId, titleId) {
       console.log('Loading playlist:', playlist.name);
 
       // Show the music content section
@@ -349,9 +442,9 @@
       musicContent.classList.add('visible');
 
       // Show and update selected playlist text
-      const selectionStatus = document.getElementById('selection-status');
+      const selectionStatus = document.getElementById(statusId);
       selectionStatus.classList.add('visible');
-      document.getElementById('selected-playlist').textContent = playlist.name;
+      document.getElementById(titleId).textContent = playlist.name;
 
       // Load tracks
       const tracklistDiv = document.getElementById('tracklist');
