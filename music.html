@@ -723,10 +723,33 @@
       // Destroy existing player if any
       if (player) {
         try {
+          // Get the parent before destroying, to know where to put the new one back
+          const currentElement = document.getElementById('youtube-player');
+          const parent = currentElement ? currentElement.parentNode : document.querySelector('.video-wrapper');
+
           player.destroy();
           player = null;
+
+          // Re-create the div if it was removed by destroy()
+          if (!document.getElementById('youtube-player') && parent) {
+            console.log('Re-creating player container');
+            const newDiv = document.createElement('div');
+            newDiv.id = 'youtube-player';
+            parent.appendChild(newDiv);
+          }
+
         } catch (e) {
           console.log('Error destroying player:', e);
+        }
+      }
+
+      // Ensure container exists (just in case)
+      if (!document.getElementById('youtube-player')) {
+        const wrapper = document.querySelector('.video-wrapper');
+        if (wrapper) {
+          const newDiv = document.createElement('div');
+          newDiv.id = 'youtube-player';
+          wrapper.appendChild(newDiv);
         }
       }
 
