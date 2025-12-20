@@ -237,6 +237,15 @@
     let playlists = {};
     let genrePlaylists = {};
 
+    // Player state variables
+    let player;
+    let isAPIReady = false;
+    let playerInitialized = false;
+    let updateInterval;
+    let currentYear;
+    let currentQuarter;
+    let lastPlayingIndex = -1;
+
     // Load YouTube IFrame API
     const tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
