@@ -699,19 +699,8 @@
       lastPlayingIndex = -1;
 
       // Initialize or update the player
-      if (!playerInitialized) {
-        // First time or after year change - create the player
-        initializePlayer(playlist.id);
-      } else if (player && player.loadPlaylist) {
-        // Player exists - just load new playlist
-        console.log('Loading new playlist in existing player');
-        player.loadPlaylist({
-          list: playlist.id,
-          listType: 'playlist',
-          index: 0
-        });
-        setupTrackClickHandlers();
-      }
+      // Always re-initialize to ensure clean state and avoid transition issues
+      initializePlayer(playlist.id);
     }
 
     // Initialize the YouTube player
