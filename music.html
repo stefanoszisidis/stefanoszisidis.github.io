@@ -849,6 +849,38 @@
       }
     }
 
+    // Handle Player Error (e.g. video unavailable)
+    function onPlayerError(event) {
+      console.log('Player Error:', event.data);
+      // 100: Video not found
+      // 101, 150: Video owner does not allow embedding
+      if (event.data === 100 || event.data === 101 || event.data === 150) {
+        console.log('Skipping unavailable video...');
+        if (player && player.nextVideo) {
+          // Add a small delay to avoid rapid skipping loops
+          setTimeout(() => {
+            player.nextVideo();
+          }, 500);
+        }
+      }
+    }
+
+    // Handle Player Error (e.g. video unavailable)
+    function onPlayerError(event) {
+      console.log('Player Error:', event.data);
+      // 100: Video not found
+      // 101, 150: Video owner does not allow embedding
+      if (event.data === 100 || event.data === 101 || event.data === 150) {
+        console.log('Skipping unavailable video...');
+        if (player && player.nextVideo) {
+          // Add a small delay to avoid rapid skipping loops
+          setTimeout(() => {
+            player.nextVideo();
+          }, 500);
+        }
+      }
+    }
+
     function onPlayerReady(event) {
       console.log('Player ready');
       setupTrackClickHandlers();
