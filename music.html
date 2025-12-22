@@ -193,8 +193,8 @@
             genre:</p>
 
           <!-- Genre Selection -->
-          <div class="genre-selector">
-            <button class="genre-btn" data-genre="Reggae">Reggae</button>
+          <div id="genre-selector" class="genre-selector">
+            <!-- Dynamically populated -->
           </div>
 
           <!-- Genre Year Selection (dynamically populated) -->
@@ -432,6 +432,15 @@
       },
       "genres": {
         "Reggae": {
+          "2025": {
+            "id": "PLo5Dkz0iHmDjHA1aTXkq8dXNWi8VYkVUk",
+            "name": "2025 Reggae Playlist",
+            "tracks": [
+              "Protoje - BIG 45 (Official Video)",
+              "Yehoud I - Leave Babylon",
+              "Mungo's Hi Fi - Rules of the Dance Ft. Charlie P (Kahn Remix)"
+            ]
+          },
           "2024": {
             "id": "PLo5Dkz0iHmDjwVzHSo_SEjxKdK_X7LLde",
             "name": "2024 Reggae Playlist",
@@ -450,8 +459,24 @@
               "Original Koffee - Raggamuffin"
             ]
           }
+        },
+        "Dance": {
+          "2024": {
+            "id": "PLo5Dkz0iHmDiFL0_0Gp3z7_ouuZ7u5cUF",
+            "name": "2024 Dance Playlist",
+            "tracks": [
+              "Abbebe (Sainte Vie Remix)",
+              "Parra for Cuva - Mimose (Official Visuals)",
+              "Michelle Gurevich - Party Girl (Sainte Vie Remix) [Sainte Vie]",
+              "Seba Campos - Los Halcones Remix (feat. Santiago Moraes) (Official Audio)",
+              "Yaeji - Done (Let's Get It) (Official Video)",
+              "Nicola Conte & Gianluca Petrella - Inner Light (feat. Raashan Ahmad)",
+              "King Ben - Austuminzi"
+            ]
+          }
         }
       }
+    }
     };
 
     // Load playlist data from JSON file
@@ -504,18 +529,23 @@
 
     // Setup genre button handlers
     function setupGenreButtons() {
-      const genreButtons = document.querySelectorAll('.genre-btn');
-      genreButtons.forEach(btn => {
-        btn.addEventListener('click', function () {
-          const genre = this.dataset.genre;
+      const genreSelector = document.getElementById('genre-selector');
+      genreSelector.innerHTML = ''; // Clear existing
 
+      Object.keys(genrePlaylists).forEach(genre => {
+        const btn = document.createElement('button');
+        btn.className = 'genre-btn';
+        btn.textContent = genre;
+        btn.dataset.genre = genre;
+
+        btn.addEventListener('click', function () {
           // Deactivate quarterly selection
           document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
           document.getElementById('quarter-selector').classList.remove('visible');
           document.getElementById('selection-status').classList.remove('visible');
 
           // Update active state
-          genreButtons.forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.genre-btn').forEach(b => b.classList.remove('active'));
           this.classList.add('active');
 
           // Update current genre
@@ -525,6 +555,9 @@
           const years = Object.keys(genrePlaylists[genre]);
           if (years.length > 0) {
             // Trigger click on first genre year button to load playlist
+            // Sort years in descending order (newest first)
+            const sortedYears = years.sort((a, b) => b - a);
+            // We need to wait for buttons to be created in updateGenreYearButtons
             setTimeout(() => {
               const firstYearBtn = document.querySelector('#genre-year-selector .quarter-btn');
               if (firstYearBtn) {
@@ -533,6 +566,8 @@
             }, 0);
           }
         });
+
+        genreSelector.appendChild(btn);
       });
     }
 
