@@ -171,6 +171,15 @@
   },
   "genres": {
     "Reggae": {
+      "2025": {
+        "id": "PLo5Dkz0iHmDjHA1aTXkq8dXNWi8VYkVUk",
+        "name": "2025 Reggae Playlist",
+        "tracks": [
+          "Protoje - BIG 45 (Official Video)",
+          "Yehoud I - Leave Babylon",
+          "Mungo's Hi Fi - Rules of the Dance Ft. Charlie P (Kahn Remix)"
+        ]
+      },
       "2024": {
         "id": "PLo5Dkz0iHmDjwVzHSo_SEjxKdK_X7LLde",
         "name": "2024 Reggae Playlist",
@@ -188,6 +197,21 @@
           "Back Bitter / SAMI-T From Mighty Crown",
           "Skrillex & Damian \"Jr. Gong\" Marley - Make It Bun Dem [OFFICIAL VIDEO]",
           "Original Koffee - Raggamuffin"
+        ]
+      }
+    },
+    "Dance": {
+      "2024": {
+        "id": "PLo5Dkz0iHmDiFL0_0Gp3z7_ouuZ7u5cUF",
+        "name": "2024 Dance Playlist",
+        "tracks": [
+          "Abbebe (Sainte Vie Remix)",
+          "Parra for Cuva - Mimose (Official Visuals)",
+          "Michelle Gurevich - Party Girl (Sainte Vie Remix) [Sainte Vie]",
+          "Seba Campos - Los Halcones Remix (feat. Santiago Moraes) (Official Audio)",
+          "Yaeji - Done (Let's Get It) (Official Video)",
+          "Nicola Conte & Gianluca Petrella - Inner Light (feat. Raashan Ahmad)",
+          "King Ben - Austuminzi"
         ]
       }
     }
