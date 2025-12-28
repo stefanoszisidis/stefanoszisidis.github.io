@@ -745,14 +745,21 @@
       updateActiveTrack();
 
       // Handle "Play All" auto-advance
-      if (isPlayAllMode && event.data === YT.PlayerState.ENDED) {
+      // Use event.target to ensure we are referencing the player that fired the event
+      const activePlayer = event.target;
+
+      // event.data === 0 means ENDED
+      if (isPlayAllMode && event.data === 0) {
         // Check if it was the LAST video in the playlist
-        if (player && player.getPlaylistIndex) {
-          const currentIndex = player.getPlaylistIndex();
-          const playlistLength = player.getPlaylist() ? player.getPlaylist().length : 0;
+        if (activePlayer && activePlayer.getPlaylistIndex) {
+          const currentIndex = activePlayer.getPlaylistIndex();
+          const playlist = activePlayer.getPlaylist();
+          const playlistLength = playlist ? playlist.length : 0;
+
+          console.log(`Play All Check: Index ${currentIndex} / Length ${playlistLength}`);
 
           // If we just finished the last track
-          if (currentIndex === playlistLength - 1) {
+          if (playlistLength > 0 && currentIndex === playlistLength - 1) {
             console.log('Finished playlist in Play All mode. Check for next...');
             playAllIndex++;
             if (playAllIndex < playAllQueue.length) {
