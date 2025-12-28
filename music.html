@@ -515,6 +515,9 @@
       // Initialize or update the player
       // Always re-initialize to ensure clean state and avoid transition issues
       initializePlayer(playlist.id);
+
+      // Attach click handlers immediately so user can select tracks even if player errors
+      setupTrackClickHandlers();
     }
 
     // Initialize the YouTube player
