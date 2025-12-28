@@ -247,7 +247,7 @@
     let updateInterval;
     let currentYear;
     let currentQuarter;
-    let currentQuarter;
+
     let lastPlayingIndex = -1;
     // Play All State
     let isPlayAllMode = false;
@@ -388,37 +388,31 @@
 
         selector.appendChild(btn);
       });
-      selector.appendChild(btn);
-    });
+      // Add "Play All" button for Genre
+      if (Object.keys(years).length > 0) {
+        const playAllBtn = document.createElement('button');
+        playAllBtn.className = 'quarter-btn play-all-btn';
+        playAllBtn.textContent = 'Play All';
 
-    // Add "Play All" button for Genre
-    const playAllBtn = document.createElement('button');
-    playAllBtn.className = 'quarter-btn play-all-btn';
-    playAllBtn.textContent = 'Play All';
-    // playAllBtn.style.fontWeight = 'bold'; // Optional styling
+        playAllBtn.addEventListener('click', function () {
+          // Deactivate normal buttons
+          document.querySelectorAll('#genre-year-selector .quarter-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
 
-    playAllBtn.addEventListener('click', function () {
-      // Deactivate normal buttons
-      document.querySelectorAll('#genre-year-selector .quarter-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
+          // Setup Chain
+          isPlayAllMode = true;
+          currentGenre = genre;
+          // Sort keys descending (newest first)
+          const sortedYears = Object.keys(genrePlaylists[genre]).sort((a, b) => b - a);
+          playAllQueue = sortedYears;
+          playAllIndex = 0;
 
-      // Setup Chain
-      isPlayAllMode = true;
-      currentGenre = genre;
-      // specific logic for sorted years if needed, effectively "all years"
-      // Sort keys descending (newest first) or as per user preference? 
-      // User said "play all playlists listed under reggae (2025, 2024...)"
-      // Standard keys are usually unordered, lets sort them descending to start with newest? 
-      // Or ascending? User said "play all" - usually implies sequence. 
-      // Let's do Descending (2025 -> 2024) as they are listed.
-      const years = Object.keys(genrePlaylists[genre]).sort((a, b) => b - a);
-      playAllQueue = years;
-      playAllIndex = 0;
-
-      loadGenrePlaylist(genre, years[0]);
-    });
-    selector.appendChild(playAllBtn);
+          loadGenrePlaylist(genre, sortedYears[0]);
+        });
+        selector.appendChild(playAllBtn);
+      }
     }
+
 
     function loadGenrePlaylist(genre, year) {
       const playlist = genrePlaylists[genre][year];
