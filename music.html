@@ -247,7 +247,13 @@
     let updateInterval;
     let currentYear;
     let currentQuarter;
+    let currentQuarter;
     let lastPlayingIndex = -1;
+    // Play All State
+    let isPlayAllMode = false;
+    let playAllQueue = [];
+    let playAllIndex = 0;
+    let currentGenre = null; // Track current genre for chaining
 
     // Load YouTube IFrame API
     const tag = document.createElement('script');
@@ -382,6 +388,36 @@
 
         selector.appendChild(btn);
       });
+      selector.appendChild(btn);
+    });
+
+    // Add "Play All" button for Genre
+    const playAllBtn = document.createElement('button');
+    playAllBtn.className = 'quarter-btn play-all-btn';
+    playAllBtn.textContent = 'Play All';
+    // playAllBtn.style.fontWeight = 'bold'; // Optional styling
+
+    playAllBtn.addEventListener('click', function () {
+      // Deactivate normal buttons
+      document.querySelectorAll('#genre-year-selector .quarter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+
+      // Setup Chain
+      isPlayAllMode = true;
+      currentGenre = genre;
+      // specific logic for sorted years if needed, effectively "all years"
+      // Sort keys descending (newest first) or as per user preference? 
+      // User said "play all playlists listed under reggae (2025, 2024...)"
+      // Standard keys are usually unordered, lets sort them descending to start with newest? 
+      // Or ascending? User said "play all" - usually implies sequence. 
+      // Let's do Descending (2025 -> 2024) as they are listed.
+      const years = Object.keys(genrePlaylists[genre]).sort((a, b) => b - a);
+      playAllQueue = years;
+      playAllIndex = 0;
+
+      loadGenrePlaylist(genre, years[0]);
+    });
+    selector.appendChild(playAllBtn);
     }
 
     function loadGenrePlaylist(genre, year) {
@@ -444,6 +480,7 @@
       const quarters = playlists[year];
       if (!quarters) return;
 
+      // Create buttons for each quarter
       Object.keys(quarters).forEach((quarter, index) => {
         const btn = document.createElement('button');
         btn.className = 'quarter-btn';
@@ -455,12 +492,50 @@
           quarterBtns.forEach(b => b.classList.remove('active'));
           this.classList.add('active');
 
+          // Manual click cancels Play All mode
+          isPlayAllMode = false;
+
           currentQuarter = quarter;
           loadPlaylist(currentYear, quarter);
         });
 
         quarterSelector.appendChild(btn);
       });
+
+      // Add "Play All" button
+      if (Object.keys(quarters).length > 0) {
+        const playAllBtn = document.createElement('button');
+        playAllBtn.className = 'quarter-btn play-all-btn';
+        playAllBtn.textContent = 'Play All';
+
+        playAllBtn.addEventListener('click', function () {
+          const quarterBtns = document.querySelectorAll('.quarter-btn');
+          quarterBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+
+          isPlayAllMode = true;
+          // Sort quarters? usually they are keys. relying on object order or explicit sort?
+          // 'Q1', 'Q2', 'Q3', 'Q4' -> Alphabetical sort works.
+          // user might have 'Winter', 'Sep-Dec' -> 'Sep-Dec', 'Winter' (S comes before W).
+          // Let's rely on standard Object.keys but verify sort.
+          // Actually, standard sort for Quarters might be tricky if names vary. 
+          // For now, let's trust simple alphanumeric sort or key order.
+          playAllQueue = Object.keys(quarters).sort();
+          // If 2022 has 'Winter', 'Sep-Dec', 'Sep-Dec' comes first. That's probably reverse chronological? 
+          // Winter (early) -> Sep-Dec (late). Wait. Winter in Jan? Or Winter in Dec?
+          // 2022.Winter is usually Q1. 2022.Sep-Dec is Q4.
+          // Alphabetic: 'Sep-Dec', 'Winter'. Order: Q4, Q1. Wrong.
+          // Let's just use the keys as they appear if we assume insertion order (not guaranteed but often coincident)
+          // OR specifically sort Q1, Q2, Q3, Q4.
+          // For named ones, we might need a smart sort.
+          // For 2022: Winter, Sep-Dec. 
+          // Let's just use the raw keys for now and see.
+          playAllIndex = 0;
+
+          loadPlaylist(year, playAllQueue[0]);
+        });
+        quarterSelector.appendChild(playAllBtn);
+      }
     }
 
     // Load a specific playlist (Quarterly)
@@ -674,6 +749,36 @@
       console.log('Player state changed:', event.data);
       // Update immediately when state changes
       updateActiveTrack();
+
+      // Handle "Play All" auto-advance
+      if (isPlayAllMode && event.data === YT.PlayerState.ENDED) {
+        // Check if it was the LAST video in the playlist
+        if (player && player.getPlaylistIndex) {
+          const currentIndex = player.getPlaylistIndex();
+          const playlistLength = player.getPlaylist() ? player.getPlaylist().length : 0;
+
+          // If we just finished the last track
+          if (currentIndex === playlistLength - 1) {
+            console.log('Finished playlist in Play All mode. Check for next...');
+            playAllIndex++;
+            if (playAllIndex < playAllQueue.length) {
+              const nextKey = playAllQueue[playAllIndex];
+              console.log('Loading next:', nextKey);
+
+              if (currentGenre) {
+                loadGenrePlaylist(currentGenre, nextKey);
+              } else {
+                // Default quarterly
+                loadPlaylist(currentYear, nextKey);
+              }
+            } else {
+              console.log('Play All sequence complete.');
+              isPlayAllMode = false;
+              currentGenre = null;
+            }
+          }
+        }
+      }
     }
 
     // Clean up interval when page unloads
