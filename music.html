@@ -646,7 +646,8 @@
         playerVars: {
           listType: 'playlist',
           list: playlistId,
-          enablejsapi: 1
+          enablejsapi: 1,
+          autoplay: 1
         },
         events: {
           'onReady': onPlayerReady,
@@ -737,6 +738,12 @@
 
       // Initial update
       setTimeout(updateActiveTrack, 500);
+
+      // Force play if in Play All mode (crucial for auto-advance to work seamlessly)
+      if (isPlayAllMode && event.target && event.target.playVideo) {
+        console.log('Play All Mode: Forcing playback');
+        event.target.playVideo();
+      }
     }
 
     function onPlayerStateChange(event) {
