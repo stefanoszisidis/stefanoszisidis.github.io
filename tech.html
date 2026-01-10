@@ -275,6 +275,63 @@
 
       </div>
     </section>
+
+    <!-- Learning Notes Section -->
+    <section class="blog-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-icon">📚</span>
+          <h2>Learning Notes</h2>
+        </div>
+
+        <!-- GitHub Actions Guide -->
+        <article class="blog-post">
+          <div class="post-meta">
+            <span class="post-tag">DevOps</span>
+            <span class="post-date">January 2025</span>
+            <span class="read-time">📖 3 min read</span>
+          </div>
+
+          <h3>A Quick Guide to GitHub Actions</h3>
+
+          <div class="post-excerpt">
+            <p>
+              <span class="emoji-accent">⚡</span> GitHub Actions is a powerful CI/CD tool built right into GitHub.
+              Here's what I've learned from setting up my first few workflows.
+            </p>
+
+            <p>
+              <strong>The basics:</strong> A workflow is defined in a <code>.yml</code> file under
+              <code>.github/workflows/</code>. It runs on "triggers" like <code>push</code>,
+              <code>schedule</code> (cron), or <code>workflow_dispatch</code> (manual trigger).
+            </p>
+
+            <p>
+              <strong>Key concepts:</strong>
+            </p>
+            <p>
+              • <strong>Jobs</strong> — Independent units of work that run in parallel by default<br>
+              • <strong>Steps</strong> — Sequential commands within a job<br>
+              • <strong>Actions</strong> — Reusable building blocks (e.g., <code>actions/checkout@v4</code>)<br>
+              • <strong>Secrets</strong> — Encrypted variables for API keys and tokens
+            </p>
+
+            <p>
+              <span class="emoji-accent">💡</span> <strong>Pro tip:</strong> Use <code>workflow_dispatch</code>
+              to test your workflows manually before relying on scheduled runs.
+            </p>
+          </div>
+
+          <div class="tech-stack">
+            <span class="tech-pill">GitHub Actions</span>
+            <span class="tech-pill">CI/CD</span>
+            <span class="tech-pill">YAML</span>
+            <span class="tech-pill">Automation</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
