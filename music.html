@@ -272,16 +272,33 @@
 
     // Load playlist data from JSON file
     async function loadPlaylistData() {
+      console.log('Attempting to load data/playlists.json');
       try {
-        const response = await fetch('data/playlists.json?v=' + new Date().getTime());
+        // Aggressive cache busting using timestamp
+        const timestamp = new Date().getTime();
+        const response = await fetch('data/playlists.json?v=' + timestamp, {
+          cache: "no-store",
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+
         const data = await response.json();
+        console.log('Playlists loaded successfully:', data);
 
         // Populate global variables
         playlists = data.quarterly;
         genrePlaylists = data.genres;
+
+        // Log 2025 Q4 tracks for debugging
+        if (playlists['2025'] && playlists['2025']['Q4']) {
+          console.log('2025 Q4 Tracks loaded:', playlists['2025']['Q4'].tracks);
+        }
 
         // Initialize UI only after data is loaded
         initializeUI();
@@ -294,16 +311,17 @@
       } catch (error) {
         console.error('Error fetching playlists.json:', error);
 
-        // Show error to user
+        // Show error to user with more specific details
         const quarterlyCard = document.querySelector('.info-card');
-        const genreCard = document.querySelectorAll('.info-card')[1];
 
         if (quarterlyCard) {
           quarterlyCard.innerHTML = `
                 <h2>Quarterly Music Collections</h2>
                 <div style="padding: 1rem; background-color: rgba(239, 68, 68, 0.1); border: 1px solid var(--accent-secondary); border-radius: 6px; color: var(--accent-secondary);">
                     <p style="font-weight: 600; margin-bottom: 0.5rem;">Unable to load playlists</p>
-                    <p style="font-size: 0.9rem;">Please ensure you are viewing this page via a web server (http://) and not directly from the file system (file://).</p>
+                    <p style="font-size: 0.9rem;">Error Details: ${error.message}</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">If you are viewing this file locally (file://), browsers often block this.</p>
+                    <p style="font-size: 0.9rem;"><strong>Tip:</strong> Try using a local server (e.g., Live Server in VS Code) or check the Console (F12) for more info.</p>
                 </div>
             `;
         }
