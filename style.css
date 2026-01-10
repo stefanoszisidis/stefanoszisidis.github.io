@@ -22,16 +22,6 @@
   --header-height: 70px;
 }
 
-/* Christmas Banner */
-.christmas-banner {
-  background-color: #dc2626; /* Red-600 */
-  color: #ffffff;
-  text-align: center;
-  padding: 0.5rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
-}
 
 /* Reset & Base */
 *,
