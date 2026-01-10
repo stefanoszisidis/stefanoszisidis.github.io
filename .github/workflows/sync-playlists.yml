@@ -1,0 +1,46 @@
+name: Sync YouTube Playlists
+
+on:
+  schedule:
+    # Runs daily at midnight UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    # Allows manual trigger from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install yt-dlp
+        run: |
+          python3 -m pip install --user yt-dlp
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      
+      - name: Run sync script
+        run: node scripts/sync-playlists.js
+      
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --exit-code data/playlists.json || echo "changes=true" >> $GITHUB_OUTPUT
+      
+      - name: Commit and push changes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/playlists.json
+          git commit -m "🎵 Auto-sync playlists $(date +'%Y-%m-%d')"
+          git push
