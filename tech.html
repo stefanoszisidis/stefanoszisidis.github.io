@@ -5,53 +5,274 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tech - RunTheCode.gr</title>
+  <meta name="description"
+    content="Tech projects, experiments, and things I find interesting. A personal tech blog by RunTheCode.gr.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Tech Page Specific Styles */
+    .tech-intro {
+      padding: 3rem 0;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .tech-intro h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--accent-primary), #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tech-intro .lead {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Blog Content Section */
+    .blog-section {
+      padding: 3rem 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+    }
+
+    /* Blog Post Card */
+    .blog-post {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .blog-post:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .post-tag {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 0.8rem;
+    }
+
+    .post-date {
+      opacity: 0.8;
+    }
+
+    .blog-post h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+
+    .blog-post h3 a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .blog-post h3 a:hover {
+      color: var(--accent-primary);
+    }
+
+    .post-excerpt {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+
+    .post-excerpt p {
+      margin-bottom: 1rem;
+    }
+
+    .post-excerpt p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Code-like highlight */
+    .post-excerpt code {
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent-primary);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.9em;
+    }
+
+    /* Tech Stack Pills */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .tech-pill {
+      background: rgba(167, 139, 250, 0.15);
+      color: #a78bfa;
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* Emoji accent */
+    .emoji-accent {
+      font-size: 1.25rem;
+      margin-right: 0.25rem;
+    }
+
+    /* Read time */
+    .read-time {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .tech-intro h1 {
+        font-size: 2rem;
+      }
+
+      .tech-intro .lead {
+        font-size: 1rem;
+      }
+
+      .blog-post {
+        padding: 1.5rem;
+      }
+
+      .blog-post h3 {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
   <header class="site-header">
     <div class="container">
       <a href="index.html" class="site-title">RunTheCode.gr</a>
-      <a href="https://github.com/runthecode-gr" class="github-link" target="_blank">GitHub Profile</a>
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">/</span>
+        <span class="current">Tech</span>
+      </nav>
     </div>
   </header>
 
   <main>
-    <section class="hero">
+    <!-- Intro Section -->
+    <section class="tech-intro">
       <div class="container">
-        <h1>The Latest in Tech</h1>
-        <p class="subtitle">Technical resources, projects, and code experiments.</p>
+        <h1>Building & Learning</h1>
+        <p class="lead">
+          A collection of mini projects, experiments, and things I find interesting in the world of tech.
+          From automation scripts to fun side projects — this is where I share what I'm working on.
+        </p>
       </div>
     </section>
 
-    <section class="content-section">
+    <!-- Mini Projects Section -->
+    <section class="blog-section">
       <div class="container">
-        <article class="article-card">
-          <h2>Article Title</h2>
-          <p>Here's the first paragraph of the article. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-            malesuada, velit vel tempus varius, quam sapien malesuada sapien, non iaculis nibh arcu at felis.
-            Suspendisse eget sapien ac metus euismod auctor. Proin semper pharetra eros, in ultricies sapien bibendum
-            sit amet.</p>
-          <p>Here's the second paragraph of the article. Sed congue massa in est ullamcorper varius. Nulla eu lobortis
-            ex, vel placerat dolor. Ut gravida quis velit ac ultrices. Curabitur viverra quam vel enim consequat
-            vehicula. Vestibulum mollis ipsum quis lorem vehicula, nec tristique lorem feugiat. Nunc vestibulum est
-            nisl, eget laoreet nisi aliquet quis.</p>
-          <a href="#" class="btn">Read More</a>
+        <div class="section-header">
+          <span class="section-icon">🧪</span>
+          <h2>Mini Projects</h2>
+        </div>
+
+        <!-- YouTube Sync Bot Post -->
+        <article class="blog-post">
+          <div class="post-meta">
+            <span class="post-tag">Automation</span>
+            <span class="post-date">January 2025</span>
+            <span class="read-time">📖 2 min read</span>
+          </div>
+
+          <h3>Auto-Syncing YouTube Playlists with GitHub Actions</h3>
+
+          <div class="post-excerpt">
+            <p>
+              <span class="emoji-accent">🎵</span> I maintain several YouTube playlists for my music page,
+              but keeping the track list on the website up-to-date was a manual chore.
+              So I built a small automation to fix that.
+            </p>
+
+            <p>
+              The solution uses <strong>GitHub Actions</strong> to run a daily job that fetches
+              the latest video titles from each playlist using <code>yt-dlp</code>,
+              updates a JSON file, and commits the changes automatically.
+            </p>
+
+            <p>
+              Now, whenever I add a song to a YouTube playlist, the website updates itself overnight.
+              Zero manual work needed. <span class="emoji-accent">✨</span>
+            </p>
+          </div>
+
+          <div class="tech-stack">
+            <span class="tech-pill">GitHub Actions</span>
+            <span class="tech-pill">Node.js</span>
+            <span class="tech-pill">yt-dlp</span>
+            <span class="tech-pill">JSON</span>
+          </div>
         </article>
 
-        <article class="article-card">
-          <h2>Another Article Title</h2>
-          <p>Here's the first paragraph of another article. Phasellus vulputate volutpat metus eu accumsan. Praesent
-            aliquam ligula id lorem ultricies, ac bibendum velit ultricies. Nunc aliquam tristique ligula, non blandit
-            mauris vestibulum ac. Aliquam varius mauris eget neque laoreet auctor.</p>
-          <p>Here's the second paragraph of the article. In pharetra dui vel ipsum posuere, at tincidunt justo rhoncus.
-            Curabitur ultricies arcu nunc, vel gravida magna auctor ut. In hac habitasse platea dictumst. Nunc sodales
-            tristique odio, vel lobortis odio eleifend non. Donec vel feugiat velit. Nulla et fringilla dolor.</p>
-          <a href="#" class="btn">Read More</a>
+        <!-- Placeholder for future projects -->
+        <!--
+        <article class="blog-post">
+          <div class="post-meta">
+            <span class="post-tag">Category</span>
+            <span class="post-date">Month Year</span>
+          </div>
+          <h3>Next Project Title</h3>
+          <div class="post-excerpt">
+            <p>Description here...</p>
+          </div>
         </article>
+        -->
+
       </div>
     </section>
   </main>
