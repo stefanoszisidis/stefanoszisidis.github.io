@@ -433,6 +433,10 @@
           document.getElementById('quarter-selector').classList.remove('visible');
           document.getElementById('selection-status').classList.remove('visible');
 
+          // Deactivate compilation selection
+          document.querySelectorAll('.compilation-btn').forEach(b => b.classList.remove('active'));
+          document.getElementById('compilation-selection-status').classList.remove('visible');
+
           // Update active state
           document.querySelectorAll('.genre-btn').forEach(b => b.classList.remove('active'));
           this.classList.add('active');
@@ -582,6 +586,10 @@
           document.querySelectorAll('.genre-btn').forEach(b => b.classList.remove('active'));
           document.getElementById('genre-year-selector').classList.remove('visible');
           document.getElementById('genre-selection-status').classList.remove('visible');
+
+          // Deactivate compilation selection
+          document.querySelectorAll('.compilation-btn').forEach(b => b.classList.remove('active'));
+          document.getElementById('compilation-selection-status').classList.remove('visible');
 
           // Update active state
           yearButtons.forEach(b => b.classList.remove('active'));
