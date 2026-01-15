@@ -77,8 +77,17 @@
   <footer class="site-footer">
     <div class="container">
       <p>&copy; 2026 RunTheCode.gr</p>
+      <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Total Visitors: <span id="visitor-count">...</span>
+      </p>
     </div>
   </footer>
+
+  <script type="module">
+    import { initVisitorCounter } from './js/firebase.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      initVisitorCounter('visitor-count');
+    });
+  </script>
 </body>
 
 </html>

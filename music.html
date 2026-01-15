@@ -144,6 +144,78 @@
       color: var(--bg-body);
     }
 
+    /* Stats Card Styles */
+    .stats-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .stats-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+
+    .stats-header h3 {
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .total-plays {
+      font-size: 0.9rem;
+      color: var(--accent-secondary);
+      font-weight: 600;
+      background: rgba(244, 63, 94, 0.1);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+    }
+
+    .top-playlists-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .stat-item:last-child {
+      border-bottom: none;
+    }
+
+    .stat-rank {
+      font-weight: 700;
+      color: var(--text-secondary);
+      width: 30px;
+      font-size: 0.9rem;
+    }
+
+    .stat-name {
+      flex: 1;
+      color: var(--text-primary);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .stat-value {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
     /* Compilation specific styles */
     .compilation-selector {
       display: flex;
@@ -265,6 +337,23 @@
           </p>
         </div>
       </div>
+
+      <!-- Live Stats Section -->
+      <div class="container">
+        <div class="stats-card">
+          <div class="stats-header">
+            <h3><span style="font-size: 1.2rem;">🔥</span> Live Stats</h3>
+            <span class="total-plays"><span id="total-plays-count">...</span> Total Plays</span>
+          </div>
+          <div>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Top Trending Playlists:
+            </p>
+            <ul id="top-playlists-list" class="top-playlists-list">
+              <li class="stat-item" style="justify-content: center; color: var(--text-secondary);">Loading stats...</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section id="music-content" class="music-content">
@@ -292,6 +381,18 @@
       <p>&copy; 2026 RunTheCode.gr</p>
     </div>
   </footer>
+
+  <script type="module">
+    import { initMusicStats, trackPlay } from './js/firebase.js';
+
+    // Initialize stats when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      initMusicStats();
+    });
+
+    // Expose trackPlay to the global scope for the main script to use
+    window.trackPlayFirebase = trackPlay;
+  </script>
 
   <script>
     // Playlist data structure (populated from JSON)
@@ -938,6 +1039,16 @@
               document.getElementById('selected-genre-playlist').textContent ||
               document.getElementById('selected-compilation').textContent
           });
+        }
+
+        // Firebase: Track Play
+        if (typeof window.trackPlayFirebase === 'function') {
+          const playlistName = document.getElementById('selected-playlist').textContent ||
+            document.getElementById('selected-genre-playlist').textContent ||
+            document.getElementById('selected-compilation').textContent;
+          if (playlistName) {
+            window.trackPlayFirebase(playlistName);
+          }
         }
       }
 
