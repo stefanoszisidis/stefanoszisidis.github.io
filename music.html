@@ -134,6 +134,37 @@
       border-color: #10b981;
       color: var(--bg-body);
     }
+
+    /* Compilation specific styles */
+    .compilation-selector {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .compilation-btn {
+      padding: 0.75rem 1.5rem;
+      background-color: rgba(168, 85, 247, 0.1);
+      /* Purple tint for compilations */
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .compilation-btn:hover {
+      background-color: rgba(168, 85, 247, 0.2);
+      border-color: #a855f7;
+    }
+
+    .compilation-btn.active {
+      background-color: #a855f7;
+      border-color: #a855f7;
+      color: var(--bg-body);
+    }
   </style>
 </head>
 
@@ -205,6 +236,25 @@
             Currently selected: <strong><span id="selected-genre-playlist"></span></strong>
           </p>
         </div>
+
+        <!-- Card 3: Compilations -->
+        <div class="info-card">
+          <h2>Compilations</h2>
+          <p>Themed YouTube playlists I've curated over time. These collections bring together tracks around specific
+            moods, styles, or vibes.</p>
+
+          <p style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Select a
+            compilation:</p>
+
+          <!-- Compilation Selection -->
+          <div id="compilation-selector" class="compilation-selector">
+            <!-- Dynamically populated -->
+          </div>
+
+          <p id="compilation-selection-status" class="current-playlist selection-status">
+            Currently selected: <strong><span id="selected-compilation"></span></strong>
+          </p>
+        </div>
       </div>
     </section>
 
@@ -238,6 +288,7 @@
     // Playlist data structure (populated from JSON)
     let playlists = {};
     let genrePlaylists = {};
+    let compilations = {};
 
     // Player state variables
     let player;
@@ -299,7 +350,10 @@
           console.log('2025 Q4 Tracks loaded:', playlists['2025']['Q4'].tracks);
         }
 
-        // Initialize UI only after data is loaded
+        // Load compilations data
+        await loadCompilationData();
+
+        // Initialize UI only after all data is loaded
         initializeUI();
 
         // If API became ready while we were fetching data, checking here ensures nothing was missed
@@ -331,6 +385,35 @@
     function initializeUI() {
       setupYearButtons();
       setupGenreButtons();
+      setupCompilationButtons();
+    }
+
+    // Load compilation data from JSON file
+    async function loadCompilationData() {
+      console.log('Attempting to load data/compilations.json');
+      try {
+        const timestamp = new Date().getTime();
+        const response = await fetch('data/compilations.json?v=' + timestamp, {
+          cache: "no-store",
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Compilations loaded successfully:', data);
+        compilations = data.compilations;
+
+      } catch (error) {
+        console.error('Error fetching compilations.json:', error);
+        // Continue without compilations - don't block the page
+        compilations = {};
+      }
     }
 
     // Setup genre button handlers
@@ -375,6 +458,53 @@
 
         genreSelector.appendChild(btn);
       });
+    }
+
+    // Setup compilation button handlers
+    function setupCompilationButtons() {
+      const compilationSelector = document.getElementById('compilation-selector');
+      if (!compilationSelector) return;
+
+      compilationSelector.innerHTML = ''; // Clear existing
+
+      Object.keys(compilations).forEach(name => {
+        const btn = document.createElement('button');
+        btn.className = 'compilation-btn';
+        btn.textContent = name;
+        btn.dataset.compilation = name;
+
+        btn.addEventListener('click', function () {
+          // Deactivate quarterly selection
+          document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
+          document.getElementById('quarter-selector').classList.remove('visible');
+          document.getElementById('selection-status').classList.remove('visible');
+
+          // Deactivate genre selection
+          document.querySelectorAll('.genre-btn').forEach(b => b.classList.remove('active'));
+          document.getElementById('genre-year-selector').classList.remove('visible');
+          document.getElementById('genre-selection-status').classList.remove('visible');
+
+          // Update active state for compilations
+          document.querySelectorAll('.compilation-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+
+          loadCompilation(name);
+        });
+
+        compilationSelector.appendChild(btn);
+      });
+    }
+
+    // Load a specific compilation
+    function loadCompilation(name) {
+      const playlist = compilations[name];
+      if (!playlist) return;
+
+      // Reset quarterly and genre selection text
+      document.getElementById('selected-playlist').textContent = "";
+      document.getElementById('selected-genre-playlist').textContent = "";
+
+      displayPlaylist(playlist, 'compilation-selection-status', 'selected-compilation');
     }
 
     // Update genre year buttons
