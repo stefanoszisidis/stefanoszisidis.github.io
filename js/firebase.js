@@ -9,7 +9,8 @@ const firebaseConfig = {
   projectId: "runthecode-web",
   storageBucket: "runthecode-web.firebasestorage.app",
   messagingSenderId: "280047508385",
-  appId: "1:280047508385:web:78828a08c2e2f7b75789e0"
+  appId: "1:280047508385:web:78828a08c2e2f7b75789e0",
+  databaseURL: "https://runthecode-web-default-rtdb.europe-west1.firebasedatabase.app"
 };
 
 // Initialize Firebase
@@ -22,7 +23,7 @@ const db = getDatabase(app);
  */
 export function initVisitorCounter(elementId) {
   const visitorsRef = ref(db, 'stats/visitors');
-  
+
   // Listen for updates
   onValue(visitorsRef, (snapshot) => {
     const count = snapshot.val() || 0;
@@ -47,10 +48,10 @@ export function initVisitorCounter(elementId) {
  */
 export function trackPlay(playlistName) {
   if (!playlistName) return;
-  
+
   // Sanitize playlist name for Firebase path (no ., #, $, [, ])
   const safeName = playlistName.replace(/[.#$[\]]/g, '_');
-  
+
   // Increment total plays
   const totalPlaysRef = ref(db, 'stats/total_plays');
   runTransaction(totalPlaysRef, (count) => (count || 0) + 1);
@@ -84,7 +85,7 @@ export function initMusicStats() {
     snapshot.forEach((child) => {
       topList.push(child.val());
     });
-    
+
     // Firebase returns ascending order, so reverse it
     topList.reverse();
 
