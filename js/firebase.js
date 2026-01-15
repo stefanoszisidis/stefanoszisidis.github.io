@@ -92,7 +92,7 @@ export function initMusicStats() {
     const container = document.getElementById('top-playlists-list');
     if (container) {
       container.innerHTML = topList.map((item, index) => `
-        <li class="stat-item">
+        <li class="stat-item clickable" onclick="if(window.playPlaylistByName) window.playPlaylistByName('${item.name.replace(/'/g, "\\'")}')">
           <span class="stat-rank">#${index + 1}</span>
           <span class="stat-name">${item.name}</span>
           <span class="stat-value">${item.plays} plays</span>

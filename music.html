@@ -216,6 +216,24 @@
       color: var(--text-secondary);
     }
 
+    .stat-item.clickable {
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      border-radius: 6px;
+      padding: 0.75rem 0.5rem;
+      /* Add side padding for hover effect */
+      margin: 0 -0.5rem;
+      /* Negative margin to align with text */
+    }
+
+    .stat-item.clickable:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .stat-item.clickable:hover .stat-name {
+      color: var(--accent-primary);
+    }
+
     /* Compilation specific styles */
     .compilation-selector {
       display: flex;
@@ -392,6 +410,82 @@
 
     // Expose trackPlay to the global scope for the main script to use
     window.trackPlayFirebase = trackPlay;
+
+    // Global function to play a playlist by name (called from stats click)
+    window.playPlaylistByName = function (name) {
+      console.log('Playing from stats:', name);
+
+      // 1. Search Compilations
+      if (typeof compilations !== 'undefined' && compilations[name]) {
+        loadCompilation(name);
+        // Scroll to player
+        document.getElementById('music-content').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+
+      // 2. Search Quarterly (Format: "2025 Q4")
+      if (typeof playlists !== 'undefined') {
+        // Reverse Search to find year/quarter
+        for (const year in playlists) {
+          for (const q in playlists[year]) {
+            const pName = playlists[year][q].name; // usually "2025 Q4"? 
+            // Wait, name property in JSON might be "2025 Q4" or "Q4"? Checking...
+            // Actually playlists[year][quarter].name is usually just the Quarter name e.g. "Q4" ??
+            // No, let's check loadPlaylist logic safely.
+            // Logic: displayPlaylist uses playlist.name.
+            // In playlists.json structure?
+          }
+        }
+
+        // Simpler: Try to parse "2025 Q4"
+        const parts = name.split(' ');
+        if (parts.length === 2) {
+          const year = parts[0];
+          const q = parts[1];
+          if (playlists && playlists[year] && playlists[year][q]) {
+            // We need to trigger the UI (buttons) to keep state consistent
+            // Click the year button
+            const yearBtn = document.querySelector(`.year-btn[data-year="${year}"]`);
+            if (yearBtn) yearBtn.click();
+
+            // Wait for quarters to populate then click quarter
+            setTimeout(() => {
+              const qBtn = document.querySelector(`.quarter-btn[data-quarter="${q}"]`);
+              if (qBtn) qBtn.click();
+              document.getElementById('music-content').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+            return;
+          }
+        }
+      }
+
+      // 3. Search Genre (Ambiguous if name is just "2024", but let's try)
+      // If name is just a number like "2024", it might be a genre year.
+      if (!isNaN(name)) {
+        // Find a genre that has this year?
+        // This is ambiguous. Maybe just ignore or pick first.
+        // Let's iterate genrePlaylists
+        if (typeof genrePlaylists !== 'undefined') {
+          for (const genre in genrePlaylists) {
+            if (genrePlaylists[genre][name]) {
+              // Found one!
+              // Click genre button
+              const genreBtn = document.querySelector(`.genre-btn[data-genre="${genre}"]`);
+              if (genreBtn) genreBtn.click();
+
+              setTimeout(() => {
+                const qBtn = document.querySelector(`.quarter-btn[data-quarter="${name}"]`); // Class is quarter-btn used for year
+                if (qBtn) qBtn.click();
+                document.getElementById('music-content').scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+              return;
+            }
+          }
+        }
+      }
+
+      console.warn('Playlist not found:', name);
+    };
   </script>
 
   <script>
