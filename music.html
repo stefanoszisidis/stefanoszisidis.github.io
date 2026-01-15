@@ -5,6 +5,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Music - RunTheCode.gr</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QR6Y23BYRX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-QR6Y23BYRX');
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -702,6 +711,14 @@
     function displayPlaylist(playlist, statusId, titleId) {
       console.log('Loading playlist:', playlist.name);
 
+      // GA4 Event: Playlist Selected
+      if (typeof gtag === 'function') {
+        gtag('event', 'select_content', {
+          content_type: 'playlist',
+          item_id: playlist.name
+        });
+      }
+
       // Show the music content section
       const musicContent = document.getElementById('music-content');
       musicContent.classList.add('visible');
@@ -903,6 +920,27 @@
 
     function onPlayerStateChange(event) {
       console.log('Player state changed:', event.data);
+
+      // GA4 Event: Track Played
+      if (event.data === YT.PlayerState.PLAYING) {
+        if (typeof gtag === 'function') {
+          // Get current track info
+          let trackName = "Unknown Track";
+          try {
+            const currentIndex = player.getPlaylistIndex();
+            trackName = document.querySelector(`.track-item[data-index="${currentIndex}"] .track-name`)?.textContent || "Unknown Track";
+          } catch (e) { }
+
+          gtag('event', 'play_track', {
+            event_category: 'Music',
+            event_label: trackName,
+            playlist_name: document.getElementById('selected-playlist').textContent ||
+              document.getElementById('selected-genre-playlist').textContent ||
+              document.getElementById('selected-compilation').textContent
+          });
+        }
+      }
+
       // Update immediately when state changes
       updateActiveTrack();
 
