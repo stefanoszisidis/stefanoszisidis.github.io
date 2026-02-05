@@ -19,7 +19,7 @@
           "Bosq: Dem Know feat. Kaleta",
           "Caribombo - Bin De Dam feat. Menwar (Mauritius)",
           "Laurent Bardainne & Tigre d'Eau Douce feat. Bertrand Belin - Oiseau (Official Audio)",
-          "Habibi Funk // حبيبي فنك : Hamid El Shaeri - Ayonha (Egypt / Libya 1980s, pre-order below)",
+          "Habibi Funk // حبيبي فنκ : Hamid El Shaeri - Ayonha (Egypt / Libya 1980s, pre-order below)",
           "Protoje - Switch It Up (Official Video) ft. Original Koffee",
           "Billy Ocean - Love Really Hurts Without You (Official Audio)",
           "Bambara - “Mythic Love” (Official Video)",
@@ -32,6 +32,11 @@
           "Durand Jones & the Indications - Never Heard 'Em Say (Official Audio)",
           "Ocean Hope - Safe (Official Video)"
         ]
+      },
+      "Summer": {
+        "id": "PLo5Dkz0iHmDgOGytMLbibD0i7JtnThGmC",
+        "name": "2022 Summer",
+        "tracks": []
       },
       "Sep-Dec in Australia": {
         "id": "PLo5Dkz0iHmDizak1LkwYAr0UZMCVeIL0B",
