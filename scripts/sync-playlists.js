@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PLAYLISTS_PATH = path.join(__dirname, '..', 'data', 'playlists.json');
+const COMPILATIONS_PATH = path.join(__dirname, '..', 'data', 'compilations.json');
 
 /**
  * Fetch video titles from a YouTube playlist using yt-dlp
@@ -52,7 +53,7 @@ function fetchPlaylistTracks(playlistId) {
 /**
  * Recursively process playlist objects and update tracks
  * @param {object} obj - The playlist object to process
- * @param {string} path - Current path for logging
+ * @param {string} pathStr - Current path for logging
  */
 function processPlaylists(obj, pathStr = '') {
     for (const key of Object.keys(obj)) {
@@ -88,47 +89,58 @@ function processPlaylists(obj, pathStr = '') {
 }
 
 /**
- * Main function
+ * Sync a single JSON file
+ * @param {string} filePath - Path to the JSON file
+ * @param {string[]} rootKeys - Root keys to process
  */
-function main() {
-    console.log('=== YouTube Playlist Sync ===\n');
-    console.log(`Reading: ${PLAYLISTS_PATH}`);
+function syncFile(filePath, rootKeys) {
+    console.log(`\nReading: ${filePath}`);
     
-    // Read current playlists.json
+    if (!fs.existsSync(filePath)) {
+        console.warn(`Warning: File not found: ${filePath}`);
+        return;
+    }
+
     let data;
     try {
-        const content = fs.readFileSync(PLAYLISTS_PATH, 'utf-8');
+        const content = fs.readFileSync(filePath, 'utf-8');
         data = JSON.parse(content);
     } catch (error) {
-        console.error('Error reading playlists.json:', error.message);
-        process.exit(1);
+        console.error(`Error reading ${filePath}:`, error.message);
+        return;
     }
-    
-    // Process quarterly playlists
-    if (data.quarterly) {
-        console.log('\n--- Quarterly Playlists ---');
-        processPlaylists(data.quarterly, 'quarterly');
+
+    for (const key of rootKeys) {
+        if (data[key]) {
+            console.log(`\n--- ${key} ---`);
+            processPlaylists(data[key], key);
+        }
     }
-    
-    // Process genre playlists
-    if (data.genres) {
-        console.log('\n--- Genre Playlists ---');
-        processPlaylists(data.genres, 'genres');
-    }
-    
-    // Write updated data back
-    console.log('\nWriting updated playlists.json...');
+
+    console.log(`\nWriting updated ${filePath}...`);
     try {
         fs.writeFileSync(
-            PLAYLISTS_PATH,
+            filePath,
             JSON.stringify(data, null, 2) + '\n',
             'utf-8'
         );
         console.log('Done!');
     } catch (error) {
-        console.error('Error writing playlists.json:', error.message);
-        process.exit(1);
+        console.error(`Error writing ${filePath}:`, error.message);
     }
+}
+
+/**
+ * Main function
+ */
+function main() {
+    console.log('=== YouTube Playlist Sync ===\n');
+    
+    // Sync playlists.json
+    syncFile(PLAYLISTS_PATH, ['quarterly', 'genres']);
+    
+    // Sync compilations.json
+    syncFile(COMPILATIONS_PATH, ['compilations']);
 }
 
 main();
