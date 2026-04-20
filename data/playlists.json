@@ -9,7 +9,7 @@
           "Jóhann Jóhannsson - The Radiant City",
           "Fontaines D.C. - I Don't Belong (Official Video)",
           "Lucas Santtana ft. DUDA BEAT - Meu Primeiro Amor (clipe oficial)",
-          "Yeahman - Cariñito (ft. Hajna, Mina Shankha)",
+          "Yeahman - Cariñito (ft. Hajna, Mina Shankha)",
           "Nubya Garcia - Source (Dengue Dengue Dengue remix)",
           "Mimis Nikolopoulos - Caravan",
           "LA CARAVANE PASSE feat. TRYO – Droit Comme un Arbre (Clip officiel)",
@@ -302,13 +302,6 @@
         ]
       }
     },
-    "2026": {
-      "Q1": {
-        "id": "PLo5Dkz0iHmDgUV1fQkHpfl5HFzCR7BCJg",
-        "name": "2026 Q1 Playlist",
-        "tracks": []
-      }
-    },
     "2025": {
       "Q1": {
         "id": "PLo5Dkz0iHmDiF3jVCDKGcTFZj4kB6SU40",
@@ -388,6 +381,28 @@
           "Steve Mason ] Words in My Head",
           "Muyè (Black Coffee Remix)",
           "Shinichi Atobe - Regret (DDS023)"
+        ]
+      }
+    },
+    "2026": {
+      "Q1": {
+        "id": "PLo5Dkz0iHmDgUV1fQkHpfl5HFzCR7BCJg",
+        "name": "2026 Q1 Playlist",
+        "tracks": [
+          "Bye Bye Love",
+          "Squidward's Viola",
+          "Maoupa Mazzocchetti feat. Clara! - Mantequilla (Pariah remix)",
+          "Dillinja & Mystery - Deep Love (Remix)",
+          "Maya Jane Coles - Play The Game - mobilee074",
+          "Disarstar - Siamo Tutti (Official Video)",
+          "Some Of Adam's Blues",
+          "High again",
+          "If Only Two",
+          "Banho De Mar",
+          "Boozoo Bajou - Keep Going feat. Tony Joe White",
+          "Stereotyp vs. Al Haca - Blaze 'n' Cook [Radioslave Remix]",
+          "Beth Gibbons – Sunday Morning (Visualiser) – HELP(2)",
+          "Fred again.., Ezra Collective, CA7RIEL & Paco Amoroso - Beto’s Horns, Ezra Remix (London, 25th June)"
         ]
       }
     }
