@@ -339,6 +339,51 @@
           </div>
         </article>
 
+        <!-- GitHub Actions Re-run Gotcha -->
+        <article class="blog-post">
+          <div class="post-meta">
+            <span class="post-tag">DevOps</span>
+            <span class="post-date">April 2026</span>
+            <span class="read-time">📖 2 min read</span>
+          </div>
+
+          <h3>GitHub Actions Gotcha: "Re-run" Runs the Old Workflow, Not the Latest One</h3>
+
+          <div class="post-excerpt">
+            <p>
+              <span class="emoji-accent">💡</span> Today I spent way too long debugging why my GitHub Action kept
+              failing with the same error — even after I had already fixed the workflow file locally.
+            </p>
+
+            <p>
+              The issue? I was clicking <strong>"Re-run all jobs"</strong> on the failed run in GitHub Actions.
+              That button re-runs that exact workflow from that exact commit snapshot.
+              It does <em>not</em> pick up any new changes you have pushed to the repository.
+            </p>
+
+            <p>
+              <strong>The correct way to trigger a fresh run with the latest code:</strong><br>
+              Go to <strong>Actions → your workflow name → Run workflow</strong> (the button in the top-right).
+              This triggers a brand new <code>workflow_dispatch</code> run from your current <code>main</code> branch.
+            </p>
+
+            <p>
+              <span class="emoji-accent">🔧</span> <strong>Bonus fix from the same session:</strong> The underlying
+              error was a Node.js deprecation warning. <code>actions/checkout@v4</code> and
+              <code>actions/setup-node@v4</code> were built on Node.js 20, which GitHub is phasing out.
+              The clean fix was to upgrade both actions to <code>@v5</code>, which natively runs on Node.js 24
+              — no environment variable workarounds needed.
+            </p>
+          </div>
+
+          <div class="tech-stack">
+            <span class="tech-pill">GitHub Actions</span>
+            <span class="tech-pill">Node.js 24</span>
+            <span class="tech-pill">CI/CD</span>
+            <span class="tech-pill">Debugging</span>
+          </div>
+        </article>
+
       </div>
     </section>
   </main>
