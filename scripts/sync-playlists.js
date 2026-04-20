@@ -5,9 +5,16 @@
  * from each YouTube playlist using yt-dlp, and updates the tracks arrays.
  */
 
-const { execSync } = require('child_process');
+const { execSync, spawnSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+
+/**
+ * Sleep for a given number of milliseconds
+ */
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 const PLAYLISTS_PATH = path.join(__dirname, '..', 'data', 'playlists.json');
 const COMPILATIONS_PATH = path.join(__dirname, '..', 'data', 'compilations.json');
@@ -28,11 +35,11 @@ function fetchPlaylistTracks(playlistId) {
         // --print title: Print only the title
         // --ignore-errors: Skip unavailable videos
         const output = execSync(
-            `yt-dlp --flat-playlist --print title --ignore-errors "${playlistUrl}"`,
+            `yt-dlp --flat-playlist --print title --ignore-errors --sleep-requests 1 "${playlistUrl}"`,
             { 
                 encoding: 'utf-8',
                 maxBuffer: 10 * 1024 * 1024, // 10MB buffer for large playlists
-                timeout: 120000 // 2 minute timeout per playlist
+                timeout: 180000 // 3 minute timeout per playlist
             }
         );
         
@@ -55,7 +62,7 @@ function fetchPlaylistTracks(playlistId) {
  * @param {object} obj - The playlist object to process
  * @param {string} pathStr - Current path for logging
  */
-function processPlaylists(obj, pathStr = '') {
+async function processPlaylists(obj, pathStr = '') {
     for (const key of Object.keys(obj)) {
         const value = obj[key];
         const currentPath = pathStr ? `${pathStr}.${key}` : key;
@@ -81,9 +88,13 @@ function processPlaylists(obj, pathStr = '') {
             } else {
                 console.log(`  Keeping existing ${value.tracks.length} tracks (fetch failed)`);
             }
+            
+            // Pause between requests to avoid rate limiting
+            console.log(`  Waiting 3s before next request...`);
+            await sleep(3000);
         } else if (value && typeof value === 'object') {
             // Recurse into nested objects
-            processPlaylists(value, currentPath);
+            await processPlaylists(value, currentPath);
         }
     }
 }
@@ -93,7 +104,7 @@ function processPlaylists(obj, pathStr = '') {
  * @param {string} filePath - Path to the JSON file
  * @param {string[]} rootKeys - Root keys to process
  */
-function syncFile(filePath, rootKeys) {
+async function syncFile(filePath, rootKeys) {
     console.log(`\nReading: ${filePath}`);
     
     if (!fs.existsSync(filePath)) {
@@ -113,7 +124,7 @@ function syncFile(filePath, rootKeys) {
     for (const key of rootKeys) {
         if (data[key]) {
             console.log(`\n--- ${key} ---`);
-            processPlaylists(data[key], key);
+            await processPlaylists(data[key], key);
         }
     }
 
@@ -133,14 +144,17 @@ function syncFile(filePath, rootKeys) {
 /**
  * Main function
  */
-function main() {
+async function main() {
     console.log('=== YouTube Playlist Sync ===\n');
     
     // Sync playlists.json
-    syncFile(PLAYLISTS_PATH, ['quarterly', 'genres']);
+    await syncFile(PLAYLISTS_PATH, ['quarterly', 'genres']);
     
     // Sync compilations.json
-    syncFile(COMPILATIONS_PATH, ['compilations']);
+    await syncFile(COMPILATIONS_PATH, ['compilations']);
 }
 
-main();
+main().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+});
