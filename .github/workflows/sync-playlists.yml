@@ -1,5 +1,8 @@
 name: Sync YouTube Playlists
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   schedule:
     # Runs daily at midnight UTC
@@ -13,8 +16,6 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     
     steps:
       - name: Checkout repository
