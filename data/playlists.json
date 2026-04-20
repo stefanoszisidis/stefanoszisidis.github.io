@@ -1,4 +1,4 @@
-{
+﻿{
   "quarterly": {
     "2022": {
       "Winter": {
@@ -302,18 +302,7 @@
         ]
       }
     },
-    "2026": {
-      "Q1": {
-        "id": "PLo5Dkz0iHmDgUV1fQkHpfl5HFzCR7BCJg",
-        "name": "2026 Q1 Playlist",
-        "tracks": []
-      },
-      "Q2": {
-        "id": "PLo5Dkz0iHmDjWv9Mc1Xnzowul26LILqO3",
-        "name": "2026 Q2 Playlist",
-        "tracks": []
-      }
-    },
+
     "2025": {
       "Q1": {
         "id": "PLo5Dkz0iHmDiF3jVCDKGcTFZj4kB6SU40",
@@ -416,6 +405,11 @@
           "Beth Gibbons – Sunday Morning (Visualiser) – HELP(2)",
           "Fred again.., Ezra Collective, CA7RIEL & Paco Amoroso - Beto’s Horns, Ezra Remix (London, 25th June)"
         ]
+      },
+      "Q2": {
+        "id": "PLo5Dkz0iHmDjWv9Mc1Xnzowul26LILqO3",
+        "name": "2026 Q2 Playlist",
+        "tracks": []
       }
     }
   },
