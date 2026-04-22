@@ -5,10 +5,10 @@
         "id": "PLo5Dkz0iHmDjUw5lYLhGrkIlvG8HaY1H8",
         "name": "2022.Winter",
         "tracks": [
-          "TOMORROW COMES THE HARVEST on Delos ft. Jeff Mills, Jean-Phi Dary & Prabhu Edouard | Full Concert",
+          "TOMORROW COMES THE HARVEST στη Δήλο, ft. Jeff Mills, Jean-Phi Dary & Prabhu Edouard | Full Concert",
           "Jóhann Jóhannsson - The Radiant City",
           "Fontaines D.C. - I Don't Belong (Official Video)",
-          "Lucas Santtana ft. DUDA BEAT - Meu Primeiro Amor (clipe oficial)",
+          "Lucas Santtana ft. Duda Beat - Meu Primeiro Amor (clipe oficial)",
           "Yeahman - Cariñito (ft. Hajna, Mina Shankha)",
           "Nubya Garcia - Source (Dengue Dengue Dengue remix)",
           "Mimis Nikolopoulos - Caravan",
@@ -68,7 +68,7 @@
           "Lukas Endhardt - Buteo Buteo (Original Mix)",
           "Nu Genea - Tienaté (Official Visual Video)",
           "Mar Malade - 'Poster Girl' (A Postcard)",
-          "13 - YĪN YĪN - Dis kô Dis kô",
+          "13 - YĪN YĪN - Dis kô Dis kô",
           "Little Simz - Point And Kill feat. Obongjayar (Official Video)",
           "Knusperstück",
           "BadWolf, Soff - Dame Mas [Phisica]",
@@ -177,13 +177,13 @@
           "Peggy Gou - (It Goes Like) Nanana [Karaoke Video]",
           "ΕΚΜΕΚ - Θα γίνω αέρας - Lyric Video",
           "Rumbakana - Déjame ft. Manu Chao",
-          "Sigmataf - Μη συνηθίσεις το λίγο",
+          "Sigmataf - Μη συνηθίσεις το λίγο",
           "\"Ξενιτεμένα μου πουλιά\" - Alkyone στο Μουσικό Κουτί",
           "Jungle - I've Been In Love feat. Channel Tres (Official Video)",
           "Little Simz - Gorilla (Official Video)",
           "The Smile - Bending Hectic",
           "The Hives - Countdown to Shutdown (Official Music Video)",
-          "[Deleted video]",
+          "Deleted video",
           "Hania Rani – Dancing with Ghosts ft. Patrick Watson (Official Video)",
           "Erik Satie: Gymnopédies & Gnossiennes (Full Album)",
           "The Black Angels - History of the Future (Official Video)",
@@ -256,7 +256,7 @@
           "Παύλος Παυλίδης - ΜΠΡΑΝΚΑΛΕΟΝΕ (Official Music Video)",
           "Parra for Cuva - Mimose (Official Visuals)",
           "Looking Good - The Witchy Djypsies",
-          "Sigmataf - Μη συνηθίσεις το λίγο",
+          "Sigmataf - Μη συνηθίσεις το λίγο",
           "Full Flower Moon Band - Devil (Official Music Video)",
           "Ταφ Λάθος - Έχω ( Video art με στίχους)",
           "Ταφ Λάθος -  Έχω | Taf Lathos - Eho ( Official Audio )",
@@ -270,7 +270,7 @@
         "name": "2024 Q3 Playlist",
         "tracks": [
           "Mr Bobby | Manu Chao | Playing For Change",
-          "Manu Chao - São Paulo Motoboy (Official Music Video)",
+          "Manu Chao - São Paulo Motoboy (Official Music Video)",
           "King Gizzard & The Lizard Wizard - Honey (Official Video)",
           "Yaeji - Done (Let's Get It) (Official Video)",
           "Aldous Harding - The Barrel (Official Video)",
@@ -302,7 +302,6 @@
         ]
       }
     },
-
     "2025": {
       "Q1": {
         "id": "PLo5Dkz0iHmDiF3jVCDKGcTFZj4kB6SU40",
@@ -376,11 +375,11 @@
           "Haul",
           "Oh Jah (2002 Remaster)",
           "Joy Crookes - Somebody To You (Official Video)",
-          "The Limiñanas, Bertrand Belin - J'adore le monde (Official Video)",
+          "The Limiñanas, Bertrand Belin - J'adore le monde (Official Video)",
           "LIPKA - Grande Giocatore [Audio]",
           "The Heart is a Lonely Hunter",
           "Steve Mason ] Words in My Head",
-          "Muyè (Black Coffee Remix)",
+          "Muyè (Black Coffee Remix)",
           "Shinichi Atobe - Regret (DDS023)"
         ]
       }
@@ -403,13 +402,17 @@
           "Boozoo Bajou - Keep Going feat. Tony Joe White",
           "Stereotyp vs. Al Haca - Blaze 'n' Cook [Radioslave Remix]",
           "Beth Gibbons – Sunday Morning (Visualiser) – HELP(2)",
-          "Fred again.., Ezra Collective, CA7RIEL & Paco Amoroso - Beto’s Horns, Ezra Remix (London, 25th June)"
+          "Fred again.., Ezra Collective, CA7RIEL & Paco Amoroso - Beto’s Horns, Ezra Remix (London, 25th June)",
+          "Jorg Kuning - Squidward's Viola [WSDM028]"
         ]
       },
       "Q2": {
         "id": "PLo5Dkz0iHmDjWv9Mc1Xnzowul26LILqO3",
         "name": "2026 Q2 Playlist",
-        "tracks": []
+        "tracks": [
+          "Massive Attack / Tom Waits - Boots on the Ground",
+          "Tape 05"
+        ]
       }
     }
   },
@@ -451,7 +454,7 @@
         "name": "2023 Dance Playlist",
         "tracks": [
           "Peggy Gou - (It Goes Like) Nanana [Karaoke Video]",
-          "[Deleted video]",
+          "Deleted video",
           "Paul Kalkbrenner - Schwer (Official Video)",
           "&ME, Black Coffee - The Rapture Pt.III",
           "Monolink - Turning Away (Parra for Cuva Remix) (Visualizer)",
@@ -494,7 +497,7 @@
           "Μαρία Σταφυλοπάτη & Χαΐνηδες - Απο ξένο τόπο",
           "ΕΚΜΕΚ - Θα γίνω αέρας - Lyric Video",
           "ΕΚΜΕΚ - Ο κήπος της Ελένης",
-          "Sigmataf - Μη συνηθίσεις το λίγο",
+          "Sigmataf - Μη συνηθίσεις το λίγο",
           "\"Ξενιτεμένα μου πουλιά\" - Alkyone στο Μουσικό Κουτί",
           "\"Αερικό\" - Alkyone στο Μουσικό Κουτί",
           "Θεός - Βασίλης Λέκκας - Κώστας Τηλαβερίδης / Theos - Vasilis Lekkas-Kostas Tilaveridis / lyric video"
