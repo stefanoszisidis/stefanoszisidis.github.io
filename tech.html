@@ -384,6 +384,59 @@
           </div>
         </article>
 
+        <!-- Sync Script Debugging: API & BOM Traps -->
+        <article class="blog-post">
+          <div class="post-meta">
+            <span class="post-tag">JavaScript / DevOps</span>
+            <span class="post-date">April 2026</span>
+            <span class="read-time">📖 3 min read</span>
+          </div>
+
+          <h3>Silent Failures: Upgrading to YouTube API & The BOM JSON Trap</h3>
+
+          <div class="post-excerpt">
+            <p>
+              <span class="emoji-accent">💡</span> I recently faced two separate "silent failures" where my playlist sync script was running successfully in GitHub Actions, but my tracklists were coming up empty on the website.
+            </p>
+
+            <p>
+              <strong>1. Bot Detection & Rate Limiting</strong><br>
+              Initially, I was using <code>yt-dlp</code> to scrape playlist data. However, GitHub Actions runner IPs are heavily flagged by YouTube's bot detection. The script would run, get blocked, return 0 tracks, and exit gracefully—leaving the JSON untouched.
+              <br><strong>The fix:</strong> I rewrote the script to use the official <strong>YouTube Data API v3</strong>. By using an authenticated API Key (stored securely in GitHub Secrets) and native <code>fetch</code>, the sync is now faster, more stable, and immune to IP blocking.
+            </p>
+
+            <p>
+              <strong>2. The Byte Order Mark (BOM) Trap</strong><br>
+              After the API fix, the script <em>still</em> wasn't saving data. The logs showed a strange error: <code>Unexpected token '', "{ "quar"... is not valid JSON"</code>. To the naked eye, the JSON file looked perfect.
+            </p>
+
+            <p>
+              It turns out the file had been saved with a <strong>UTF-8 BOM</strong>. This is an invisible character at the very beginning of a file that tells some editors how to read the encoding. While humans can't see it, Node.js sees it as an illegal character before the opening <code>{</code>, causing <code>JSON.parse()</code> to fail instantly. Since my script caught the error and exited cleanly without failing the GitHub Action step, it looked like a successful run!
+            </p>
+
+            <p>
+              <strong>How I fixed the BOM issue:</strong><br>
+              1. Opened <code>playlists.json</code> in VS Code.<br>
+              2. Clicked the encoding setting in the bottom right status bar.<br>
+              3. Changed <strong>UTF-8 with BOM</strong> to <strong>UTF-8</strong> (plain).<br>
+              4. Saved and pushed the file.
+            </p>
+
+            <p>
+              <span class="emoji-accent">🔧</span> <strong>Key Takeaways:</strong><br>
+              First, avoid web scraping in CI/CD environments when official APIs are available. Second, if you see an "Unexpected Token" error at the start of a valid JSON file, check for invisible encoding characters. Always stick to plain <strong>UTF-8 (No BOM)</strong> for configuration files in Node.js environments.
+            </p>
+          </div>
+
+          <div class="tech-stack">
+            <span class="tech-pill">Node.js</span>
+            <span class="tech-pill">YouTube API v3</span>
+            <span class="tech-pill">Debugging</span>
+            <span class="tech-pill">UTF-8</span>
+            <span class="tech-pill">JSON</span>
+          </div>
+        </article>
+
       </div>
     </section>
   </main>
