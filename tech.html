@@ -407,7 +407,7 @@
 
             <p>
               <strong>2. The Byte Order Mark (BOM) Trap</strong><br>
-              After the API fix, the script <em>still</em> wasn't saving data. The logs showed a strange error: <code>Unexpected token '', "{ "quar"... is not valid JSON"</code>. To the naked eye, the JSON file looked perfect.
+              After the API fix, the script <em>still</em> wasn't saving data. The GitHub Action was marked as a success, but I decided to dig into the logs manually (by going to the <strong>Actions tab</strong>, clicking the run, and expanding the <strong>"Run sync script"</strong> step). There, the logs showed a strange error: <code>Unexpected token '', "{ "quar"... is not valid JSON"</code>. To the naked eye, the JSON file looked perfect.
             </p>
 
             <p>
