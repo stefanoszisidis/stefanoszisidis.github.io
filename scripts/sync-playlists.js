@@ -33,6 +33,7 @@ async function fetchPlaylistTracks(playlistId) {
             
             const response = await fetch(url);
             const data = await response.json();
+            console.log(`DEBUG: API Response for ${playlistId}:`, JSON.stringify(data).substring(0, 100));
 
             if (data.error) {
                 throw new Error(data.error.message);
@@ -49,10 +50,15 @@ async function fetchPlaylistTracks(playlistId) {
         console.log(`  Found ${allTitles.length} tracks`);
         return allTitles;
 
+    // } catch (error) {
+    //     console.error(`  Error fetching playlist ${playlistId}:`, error.message);
+    //     return null; // Return null to indicate failure (preserve existing data)
+    // }
+
     } catch (error) {
-        console.error(`  Error fetching playlist ${playlistId}:`, error.message);
-        return null; // Return null to indicate failure (preserve existing data)
-    }
+    console.error(`  ❌ Error fetching playlist ${playlistId}:`, error.message);
+    throw error; // This will make the GitHub Action actually turn RED so you know it failed
+}
 }
 
 /**
@@ -89,6 +95,11 @@ async function processPlaylists(obj, pathStr = '') {
  * Sync a single JSON file
  */
 async function syncFile(filePath, rootKeys) {
+    const dir = path.dirname(filePath);
+if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+}
+    
     console.log(`\nReading: ${filePath}`);
     
     if (!fs.existsSync(filePath)) {
