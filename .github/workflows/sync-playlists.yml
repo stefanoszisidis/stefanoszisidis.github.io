@@ -1,7 +1,5 @@
 name: Sync YouTube Playlists
 
-
-
 on:
   schedule:
     # Runs daily at midnight UTC
@@ -25,12 +23,9 @@ jobs:
         with:
           node-version: '24'
       
-      - name: Install yt-dlp
-        run: |
-          python3 -m pip install --user yt-dlp
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-      
       - name: Run sync script
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: node scripts/sync-playlists.js
       
       - name: Check for changes

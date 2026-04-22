@@ -1,56 +1,54 @@
 /**
- * YouTube Playlist Sync Script
+ * YouTube Playlist Sync Script (API Version)
  * 
  * This script reads playlists.json, fetches the latest video titles
- * from each YouTube playlist using yt-dlp, and updates the tracks arrays.
+ * from each YouTube playlist using the official YouTube Data API v3.
  */
 
-const { execSync, spawnSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-/**
- * Sleep for a given number of milliseconds
- */
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 const PLAYLISTS_PATH = path.join(__dirname, '..', 'data', 'playlists.json');
 const COMPILATIONS_PATH = path.join(__dirname, '..', 'data', 'compilations.json');
+const API_KEY = process.env.YOUTUBE_API_KEY;
 
 /**
- * Fetch video titles from a YouTube playlist using yt-dlp
+ * Fetch video titles from a YouTube playlist using the official API
  * @param {string} playlistId - The YouTube playlist ID
- * @returns {string[]} Array of video titles
+ * @returns {Promise<string[]>} Array of video titles
  */
-function fetchPlaylistTracks(playlistId) {
-    const playlistUrl = `https://www.youtube.com/playlist?list=${playlistId}`;
+async function fetchPlaylistTracks(playlistId) {
+    if (!API_KEY) {
+        throw new Error('YOUTUBE_API_KEY environment variable is not set');
+    }
+
+    let allTitles = [];
+    let nextPageToken = '';
     
     try {
         console.log(`  Fetching playlist: ${playlistId}`);
         
-        // Use yt-dlp to get video titles
-        // --flat-playlist: Don't download videos, just list them
-        // --print title: Print only the title
-        // --ignore-errors: Skip unavailable videos
-        const output = execSync(
-            `yt-dlp --flat-playlist --print title --ignore-errors --sleep-requests 1 "${playlistUrl}"`,
-            { 
-                encoding: 'utf-8',
-                maxBuffer: 10 * 1024 * 1024, // 10MB buffer for large playlists
-                timeout: 180000 // 3 minute timeout per playlist
+        do {
+            const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}&key=${API_KEY}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`;
+            
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.error) {
+                throw new Error(data.error.message);
             }
-        );
-        
-        const titles = output
-            .split('\n')
-            .map(line => line.trim())
-            .filter(line => line.length > 0);
-        
-        console.log(`  Found ${titles.length} tracks`);
-        return titles;
-        
+
+            if (data.items) {
+                const titles = data.items.map(item => item.snippet.title);
+                allTitles = allTitles.concat(titles);
+            }
+
+            nextPageToken = data.nextPageToken;
+        } while (nextPageToken);
+
+        console.log(`  Found ${allTitles.length} tracks`);
+        return allTitles;
+
     } catch (error) {
         console.error(`  Error fetching playlist ${playlistId}:`, error.message);
         return null; // Return null to indicate failure (preserve existing data)
@@ -67,33 +65,21 @@ async function processPlaylists(obj, pathStr = '') {
         const value = obj[key];
         const currentPath = pathStr ? `${pathStr}.${key}` : key;
         
-        // Check if this is a playlist entry (has 'id' and 'tracks' properties)
         if (value && typeof value === 'object' && value.id && Array.isArray(value.tracks)) {
             console.log(`Processing: ${currentPath}`);
             
-            const newTracks = fetchPlaylistTracks(value.id);
+            const newTracks = await fetchPlaylistTracks(value.id);
             
             if (newTracks !== null && newTracks.length > 0) {
-                // Update tracks only if we successfully fetched new ones
                 const oldCount = value.tracks.length;
                 value.tracks = newTracks;
-                
-                if (newTracks.length !== oldCount) {
-                    console.log(`  Updated: ${oldCount} → ${newTracks.length} tracks`);
-                } else {
-                    console.log(`  Track count unchanged: ${newTracks.length}`);
-                }
+                console.log(`  Updated: ${oldCount} → ${newTracks.length} tracks`);
             } else if (newTracks !== null && newTracks.length === 0) {
-                console.log(`  Warning: Playlist appears empty, keeping existing tracks`);
+                console.log(`  Warning: Playlist appears empty on YouTube, keeping existing data.`);
             } else {
-                console.log(`  Keeping existing ${value.tracks.length} tracks (fetch failed)`);
+                console.log(`  Keeping existing ${value.tracks.length} tracks (API fetch failed)`);
             }
-            
-            // Pause between requests to avoid rate limiting
-            console.log(`  Waiting 3s before next request...`);
-            await sleep(3000);
         } else if (value && typeof value === 'object') {
-            // Recurse into nested objects
             await processPlaylists(value, currentPath);
         }
     }
@@ -101,8 +87,6 @@ async function processPlaylists(obj, pathStr = '') {
 
 /**
  * Sync a single JSON file
- * @param {string} filePath - Path to the JSON file
- * @param {string[]} rootKeys - Root keys to process
  */
 async function syncFile(filePath, rootKeys) {
     console.log(`\nReading: ${filePath}`);
@@ -130,27 +114,21 @@ async function syncFile(filePath, rootKeys) {
 
     console.log(`\nWriting updated ${filePath}...`);
     try {
-        fs.writeFileSync(
-            filePath,
-            JSON.stringify(data, null, 2) + '\n',
-            'utf-8'
-        );
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n', 'utf-8');
         console.log('Done!');
     } catch (error) {
         console.error(`Error writing ${filePath}:`, error.message);
     }
 }
 
-/**
- * Main function
- */
 async function main() {
-    console.log('=== YouTube Playlist Sync ===\n');
+    console.log('=== YouTube API Playlist Sync ===\n');
+    if (!API_KEY) {
+        console.error('ERROR: YOUTUBE_API_KEY environment variable is missing.');
+        process.exit(1);
+    }
     
-    // Sync playlists.json
     await syncFile(PLAYLISTS_PATH, ['quarterly', 'genres']);
-    
-    // Sync compilations.json
     await syncFile(COMPILATIONS_PATH, ['compilations']);
 }
 
