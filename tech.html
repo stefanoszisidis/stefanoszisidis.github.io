@@ -1,451 +1,159 @@
-<!DOCTYPE html>
-<html lang="en">
+---
+layout: default
+title: Tech
+breadcrumb: Tech
+description: "Tech projects, experiments, and things I find interesting. A personal tech blog by RunTheCode.gr."
+extra_css: |
+  .tech-intro { padding: 3rem 0; text-align: center; border-bottom: 1px solid var(--border-color); }
+  .tech-intro h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, var(--accent-primary), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .tech-intro .lead { font-size: 1.15rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; line-height: 1.7; }
+  .blog-section { padding: 3rem 0; }
+  .blog-post { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; transition: all 0.3s ease; }
+  .blog-post:hover { border-color: var(--accent-primary); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); }
+  .post-meta { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; font-size: 0.875rem; color: var(--text-secondary); }
+  .post-tag { background: rgba(56, 189, 248, 0.15); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 500; font-size: 0.8rem; }
+  .blog-post h3 { font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem; line-height: 1.3; }
+  .blog-post h3 a { color: inherit; text-decoration: none; }
+  .blog-post h3 a:hover { color: var(--accent-primary); }
+  .post-excerpt { color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; }
+  .post-excerpt code { background: rgba(56, 189, 248, 0.1); color: var(--accent-primary); padding: 0.15rem 0.4rem; border-radius: 4px; font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9em; }
+  .tech-stack { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+  .tech-pill { background: rgba(167, 139, 250, 0.15); color: #a78bfa; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 0.8rem; font-weight: 500; }
+---
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tech - RunTheCode.gr</title>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QR6Y23BYRX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+<!-- Intro Section -->
+<section class="tech-intro">
+  <div class="container">
+    <h1>Building & Learning</h1>
+    <p class="lead">
+      A collection of mini projects, experiments, and things I find interesting in the world of tech.
+      From automation scripts to fun side projects — this is where I share what I'm working on.
+    </p>
+  </div>
+</section>
 
-    gtag('config', 'G-QR6Y23BYRX');
-  </script>
-  <meta name="description"
-    content="Tech projects, experiments, and things I find interesting. A personal tech blog by RunTheCode.gr.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <style>
-    /* Tech Page Specific Styles */
-    .tech-intro {
-      padding: 3rem 0;
-      text-align: center;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .tech-intro h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, var(--accent-primary), #a78bfa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .tech-intro .lead {
-      font-size: 1.15rem;
-      color: var(--text-secondary);
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.7;
-    }
-
-    /* Blog Content Section */
-    .blog-section {
-      padding: 3rem 0;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 2rem;
-    }
-
-    .section-header h2 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin: 0;
-    }
-
-    .section-icon {
-      font-size: 1.5rem;
-    }
-
-    /* Blog Post Card */
-    .blog-post {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      transition: all 0.3s ease;
-    }
-
-    .blog-post:hover {
-      border-color: var(--accent-primary);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    .post-meta {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1rem;
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-    }
-
-    .post-tag {
-      background: rgba(56, 189, 248, 0.15);
-      color: var(--accent-primary);
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-weight: 500;
-      font-size: 0.8rem;
-    }
-
-    .post-date {
-      opacity: 0.8;
-    }
-
-    .blog-post h3 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 1rem;
-      line-height: 1.3;
-    }
-
-    .blog-post h3 a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .blog-post h3 a:hover {
-      color: var(--accent-primary);
-    }
-
-    .post-excerpt {
-      color: var(--text-secondary);
-      line-height: 1.8;
-      margin-bottom: 1.5rem;
-    }
-
-    .post-excerpt p {
-      margin-bottom: 1rem;
-    }
-
-    .post-excerpt p:last-child {
-      margin-bottom: 0;
-    }
-
-    /* Code-like highlight */
-    .post-excerpt code {
-      background: rgba(56, 189, 248, 0.1);
-      color: var(--accent-primary);
-      padding: 0.15rem 0.4rem;
-      border-radius: 4px;
-      font-family: 'Consolas', 'Monaco', monospace;
-      font-size: 0.9em;
-    }
-
-    /* Tech Stack Pills */
-    .tech-stack {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1.5rem;
-    }
-
-    .tech-pill {
-      background: rgba(167, 139, 250, 0.15);
-      color: #a78bfa;
-      padding: 0.3rem 0.75rem;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-
-    /* Emoji accent */
-    .emoji-accent {
-      font-size: 1.25rem;
-      margin-right: 0.25rem;
-    }
-
-    /* Read time */
-    .read-time {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .tech-intro h1 {
-        font-size: 2rem;
-      }
-
-      .tech-intro .lead {
-        font-size: 1rem;
-      }
-
-      .blog-post {
-        padding: 1.5rem;
-      }
-
-      .blog-post h3 {
-        font-size: 1.25rem;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <header class="site-header">
-    <div class="container">
-      <a href="index.html" class="site-title">RunTheCode.gr</a>
-      <nav class="breadcrumb">
-        <a href="index.html">Home</a>
-        <span class="separator">/</span>
-        <span class="current">Tech</span>
-      </nav>
+<!-- Search & Filter Section -->
+<section class="search-section" style="padding: 2rem 0 1rem 0;">
+  <div class="container">
+    <div class="search-container" style="position: relative; max-width: 600px; margin: 0 auto;">
+      <input type="text" id="tech-search" placeholder="Search projects, tools, or topics..." 
+             style="width: 100%; padding: 1rem 1rem 1rem 3rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-primary); font-family: inherit; font-size: 1rem; outline: none; transition: border-color 0.3s;">
+      <span style="position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); opacity: 0.5;">🔍</span>
     </div>
-  </header>
+    <div id="search-results-info" style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary); min-height: 1.4rem;">
+      <!-- Dynamic info like "Showing 3 posts" -->
+    </div>
+  </div>
+</section>
 
-  <main>
-    <!-- Intro Section -->
-    <section class="tech-intro">
-      <div class="container">
-        <h1>Building & Learning</h1>
-        <p class="lead">
-          A collection of mini projects, experiments, and things I find interesting in the world of tech.
-          From automation scripts to fun side projects — this is where I share what I'm working on.
-        </p>
-      </div>
-    </section>
-
-    <!-- Mini Projects Section -->
-    <section class="blog-section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-icon">🧪</span>
-          <h2>Mini Projects</h2>
+<!-- Blog Content Section -->
+<section class="blog-section">
+  <div class="container">
+    <div id="posts-container">
+      {% assign sorted_posts = site.posts | sort: 'date' | reverse %}
+      {% for post in sorted_posts %}
+      <article class="blog-post" data-category="{{ post.category | downcase }}" data-tags="{{ post.tags | join: ',' | downcase }}" data-title="{{ post.title | downcase }}">
+        <div class="post-meta">
+          <span class="post-tag">{{ post.category }}</span>
+          <span class="post-date">{{ post.date | date: "%B %Y" }}</span>
         </div>
 
-        <!-- YouTube Sync Bot Post -->
-        <article class="blog-post">
-          <div class="post-meta">
-            <span class="post-tag">Automation</span>
-            <span class="post-date">January 2025</span>
-            <span class="read-time">📖 2 min read</span>
-          </div>
+        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
 
-          <h3>Auto-Syncing YouTube Playlists with GitHub Actions</h3>
-
-          <div class="post-excerpt">
-            <p>
-              <span class="emoji-accent">🎵</span> I maintain several YouTube playlists for my music page,
-              but keeping the track list on the website up-to-date was a manual chore.
-              So I built a small automation to fix that.
-            </p>
-
-            <p>
-              The solution uses <strong>GitHub Actions</strong> to run a daily job that fetches
-              the latest video titles from each playlist using <code>yt-dlp</code>,
-              updates a JSON file, and commits the changes automatically.
-            </p>
-
-            <p>
-              Now, whenever I add a song to a YouTube playlist, the website updates itself overnight.
-              Zero manual work needed. <span class="emoji-accent">✨</span>
-            </p>
-          </div>
-
-          <div class="tech-stack">
-            <span class="tech-pill">GitHub Actions</span>
-            <span class="tech-pill">Node.js</span>
-            <span class="tech-pill">yt-dlp</span>
-            <span class="tech-pill">JSON</span>
-          </div>
-        </article>
-
-        <!-- Placeholder for future projects -->
-        <!--
-        <article class="blog-post">
-          <div class="post-meta">
-            <span class="post-tag">Category</span>
-            <span class="post-date">Month Year</span>
-          </div>
-          <h3>Next Project Title</h3>
-          <div class="post-excerpt">
-            <p>Description here...</p>
-          </div>
-        </article>
-        -->
-
-      </div>
-    </section>
-
-    <!-- Learning Notes Section -->
-    <section class="blog-section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-icon">📚</span>
-          <h2>Learning Notes</h2>
+        <div class="post-excerpt">
+          {{ post.content | split: '<!--more-->' | first }}
+          {% if post.content contains '<!--more-->' %}
+            <p><a href="{{ post.url | relative_url }}" class="read-more" style="color: var(--accent-primary); text-decoration: none; font-weight: 500;">Read more →</a></p>
+          {% endif %}
         </div>
 
-        <!-- GitHub Actions Guide -->
-        <article class="blog-post">
-          <div class="post-meta">
-            <span class="post-tag">DevOps</span>
-            <span class="post-date">January 2025</span>
-            <span class="read-time">📖 3 min read</span>
-          </div>
-
-          <h3>A Quick Guide to GitHub Actions</h3>
-
-          <div class="post-excerpt">
-            <p>
-              <span class="emoji-accent">⚡</span> GitHub Actions is a powerful CI/CD tool built right into GitHub.
-              Here's what I've learned from setting up my first few workflows.
-            </p>
-
-            <p>
-              <strong>The basics:</strong> A workflow is defined in a <code>.yml</code> file under
-              <code>.github/workflows/</code>. It runs on "triggers" like <code>push</code>,
-              <code>schedule</code> (cron), or <code>workflow_dispatch</code> (manual trigger).
-            </p>
-
-            <p>
-              <strong>Key concepts:</strong>
-            </p>
-            <p>
-              • <strong>Jobs</strong> — Independent units of work that run in parallel by default<br>
-              • <strong>Steps</strong> — Sequential commands within a job<br>
-              • <strong>Actions</strong> — Reusable building blocks (e.g., <code>actions/checkout@v4</code>)<br>
-              • <strong>Secrets</strong> — Encrypted variables for API keys and tokens
-            </p>
-
-            <p>
-              <span class="emoji-accent">💡</span> <strong>Pro tip:</strong> Use <code>workflow_dispatch</code>
-              to test your workflows manually before relying on scheduled runs.
-            </p>
-          </div>
-
-          <div class="tech-stack">
-            <span class="tech-pill">GitHub Actions</span>
-            <span class="tech-pill">CI/CD</span>
-            <span class="tech-pill">YAML</span>
-            <span class="tech-pill">Automation</span>
-          </div>
-        </article>
-
-        <!-- GitHub Actions Re-run Gotcha -->
-        <article class="blog-post">
-          <div class="post-meta">
-            <span class="post-tag">DevOps</span>
-            <span class="post-date">April 2026</span>
-            <span class="read-time">📖 2 min read</span>
-          </div>
-
-          <h3>GitHub Actions Gotcha: "Re-run" Runs the Old Workflow, Not the Latest One</h3>
-
-          <div class="post-excerpt">
-            <p>
-              <span class="emoji-accent">💡</span> Today I spent way too long debugging why my GitHub Action kept
-              failing with the same error — even after I had already fixed the workflow file locally.
-            </p>
-
-            <p>
-              The issue? I was clicking <strong>"Re-run all jobs"</strong> on the failed run in GitHub Actions.
-              That button re-runs that exact workflow from that exact commit snapshot.
-              It does <em>not</em> pick up any new changes you have pushed to the repository.
-            </p>
-
-            <p>
-              <strong>The correct way to trigger a fresh run with the latest code:</strong><br>
-              Go to <strong>Actions → your workflow name → Run workflow</strong> (the button in the top-right).
-              This triggers a brand new <code>workflow_dispatch</code> run from your current <code>main</code> branch.
-            </p>
-
-            <p>
-              <span class="emoji-accent">🔧</span> <strong>Bonus fix from the same session:</strong> The underlying
-              error was a Node.js deprecation warning. <code>actions/checkout@v4</code> and
-              <code>actions/setup-node@v4</code> were built on Node.js 20, which GitHub is phasing out.
-              The clean fix was to upgrade both actions to <code>@v5</code>, which natively runs on Node.js 24
-              — no environment variable workarounds needed.
-            </p>
-          </div>
-
-          <div class="tech-stack">
-            <span class="tech-pill">GitHub Actions</span>
-            <span class="tech-pill">Node.js 24</span>
-            <span class="tech-pill">CI/CD</span>
-            <span class="tech-pill">Debugging</span>
-          </div>
-        </article>
-
-        <!-- Sync Script Debugging: API & BOM Traps -->
-        <article class="blog-post">
-          <div class="post-meta">
-            <span class="post-tag">JavaScript / DevOps</span>
-            <span class="post-date">April 2026</span>
-            <span class="read-time">📖 3 min read</span>
-          </div>
-
-          <h3>Silent Failures: Upgrading to YouTube API & The BOM JSON Trap</h3>
-
-          <div class="post-excerpt">
-            <p>
-              <span class="emoji-accent">💡</span> I recently faced two separate "silent failures" where my playlist sync script was running successfully in GitHub Actions, but my tracklists were coming up empty on the website.
-            </p>
-
-            <p>
-              <strong>1. Bot Detection & Rate Limiting</strong><br>
-              Initially, I was using <code>yt-dlp</code> to scrape playlist data. However, GitHub Actions runner IPs are heavily flagged by YouTube's bot detection. The script would run, get blocked, return 0 tracks, and exit gracefully—leaving the JSON untouched.
-              <br><strong>The fix:</strong> I rewrote the script to use the official <strong>YouTube Data API v3</strong>. By using an authenticated API Key (stored securely in GitHub Secrets) and native <code>fetch</code>, the sync is now faster, more stable, and immune to IP blocking.
-            </p>
-
-            <p>
-              <strong>2. The Byte Order Mark (BOM) Trap</strong><br>
-              After the API fix, the script <em>still</em> wasn't saving data. The GitHub Action was marked as a success, but I decided to dig into the logs manually (by going to the <strong>Actions tab</strong>, clicking the run, and expanding the <strong>"Run sync script"</strong> step). There, the logs showed a strange error: <code>Unexpected token '', "{ "quar"... is not valid JSON"</code>. To the naked eye, the JSON file looked perfect.
-            </p>
-
-            <p>
-              It turns out the file had been saved with a <strong>UTF-8 BOM</strong>. This is an invisible character at the very beginning of a file that tells some editors how to read the encoding. While humans can't see it, Node.js sees it as an illegal character before the opening <code>{</code>, causing <code>JSON.parse()</code> to fail instantly. Since my script caught the error and exited cleanly without failing the GitHub Action step, it looked like a successful run!
-            </p>
-
-            <p>
-              <strong>How I fixed the BOM issue:</strong><br>
-              1. Opened <code>playlists.json</code> in VS Code.<br>
-              2. Clicked the encoding setting in the bottom right status bar.<br>
-              3. Changed <strong>UTF-8 with BOM</strong> to <strong>UTF-8</strong> (plain).<br>
-              4. Saved and pushed the file.
-            </p>
-
-            <p>
-              <span class="emoji-accent">🔧</span> <strong>Key Takeaways:</strong><br>
-              First, avoid web scraping in CI/CD environments when official APIs are available. Second, if you see an "Unexpected Token" error at the start of a valid JSON file, check for invisible encoding characters. Always stick to plain <strong>UTF-8 (No BOM)</strong> for configuration files in Node.js environments.
-            </p>
-          </div>
-
-          <div class="tech-stack">
-            <span class="tech-pill">Node.js</span>
-            <span class="tech-pill">YouTube API v3</span>
-            <span class="tech-pill">Debugging</span>
-            <span class="tech-pill">UTF-8</span>
-            <span class="tech-pill">JSON</span>
-          </div>
-        </article>
-
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p>&copy; 2026 RunTheCode.gr</p>
+        <div class="tech-stack">
+          {% for tag in post.tags %}
+          <span class="tech-pill">{{ tag }}</span>
+          {% endfor %}
+        </div>
+      </article>
+      {% endfor %}
     </div>
-  </footer>
-</body>
 
-</html>
+    <!-- No results message -->
+    <div id="no-results" style="display: none; text-align: center; padding: 4rem 0;">
+      <span style="font-size: 3rem; display: block; margin-bottom: 1rem;">📭</span>
+      <p style="color: var(--text-secondary); font-size: 1.2rem;">No posts found matching your search.</p>
+      <button onclick="document.getElementById('tech-search').value = ''; filterPosts('');" 
+              style="margin-top: 1rem; background: none; border: 1px solid var(--accent-primary); color: var(--accent-primary); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">
+        Clear search
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  function filterPosts(query) {
+    const posts = document.querySelectorAll('.blog-post');
+    const resultsInfo = document.getElementById('search-results-info');
+    const noResults = document.getElementById('no-results');
+    const postsContainer = document.getElementById('posts-container');
+    
+    let visibleCount = 0;
+    const searchTerm = query.toLowerCase().trim();
+
+    posts.forEach(post => {
+      const title = post.getAttribute('data-title') || '';
+      const tags = post.getAttribute('data-tags') || '';
+      const category = post.getAttribute('data-category') || '';
+      const content = post.innerText.toLowerCase();
+
+      if (searchTerm === '' || 
+          title.includes(searchTerm) || 
+          tags.includes(searchTerm) || 
+          category.includes(searchTerm) ||
+          content.includes(searchTerm)) {
+        post.style.display = 'block';
+        visibleCount++;
+      } else {
+        post.style.display = 'none';
+      }
+    });
+
+    // Update info text
+    if (searchTerm === '') {
+      resultsInfo.innerText = `Showing all ${posts.length} posts`;
+      noResults.style.display = 'none';
+      postsContainer.style.display = 'block';
+    } else {
+      resultsInfo.innerText = `Found ${visibleCount} ${visibleCount === 1 ? 'post' : 'posts'} for "${query}"`;
+      
+      if (visibleCount === 0) {
+        noResults.style.display = 'block';
+        postsContainer.style.display = 'none';
+      } else {
+        noResults.style.display = 'none';
+        postsContainer.style.display = 'block';
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('tech-search');
+    
+    searchInput.addEventListener('input', (e) => {
+      filterPosts(e.target.value);
+    });
+
+    // Initial count
+    const posts = document.querySelectorAll('.blog-post');
+    document.getElementById('search-results-info').innerText = `Showing all ${posts.length} posts`;
+
+    // Add focus styles
+    searchInput.addEventListener('focus', () => {
+      searchInput.style.borderColor = 'var(--accent-primary)';
+      searchInput.style.boxShadow = '0 0 0 4px rgba(56, 189, 248, 0.1)';
+    });
+    
+    searchInput.addEventListener('blur', () => {
+      searchInput.style.borderColor = 'var(--border-color)';
+      searchInput.style.boxShadow = 'none';
+    });
+  });
+</script>

@@ -1,0 +1,31 @@
+---
+layout: default
+breadcrumb: Tech
+---
+
+<section class="blog-section">
+  <div class="container">
+    <article class="blog-post" style="cursor: default; transform: none; box-shadow: none; border-color: var(--border-color);">
+      <div class="post-meta">
+        <span class="post-tag">{{ page.category }}</span>
+        <span class="post-date">{{ page.date | date: "%B %Y" }}</span>
+      </div>
+
+      <h1>{{ page.title }}</h1>
+
+      <div class="post-excerpt">
+        {{ content }}
+      </div>
+
+      <div class="tech-stack">
+        {% for tag in page.tags %}
+          <span class="tech-pill">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    </article>
+    
+    <div style="margin-top: 2rem;">
+      <a href="{{ '/tech.html' | relative_url }}" class="post-tag" style="text-decoration: none; background: rgba(167, 139, 250, 0.15); color: #a78bfa;">← Back to Tech</a>
+    </div>
+  </div>
+</section>
