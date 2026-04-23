@@ -24,15 +24,22 @@
 <body>
   <header class="site-header">
     <div class="container">
-      <a href="{{ '/index.html' | relative_url }}" class="site-title">RunTheCode.gr</a>
+      <a href="{{ '/' | relative_url }}" class="site-title">RunTheCode.gr</a>
+      
+      <!-- Improved Breadcrumb Logic -->
       <nav class="breadcrumb">
-        <a href="{{ '/' | relative_url }}">Home</a>
-        {% if page.parent_url %}
+        {% if page.url != "/" and page.url != "/index.html" %}
+          <a href="{{ '/' | relative_url }}">Home</a>
+          
+          <!-- Auto-detect Tech Parent for Blog Posts -->
+          {% if page.layout == "post" or page.parent_url %}
+            <span class="separator">/</span>
+            <a href="{{ page.parent_url | default: '/tech.html' | relative_url }}">{{ page.parent_name | default: 'Tech' }}</a>
+          {% endif %}
+          
           <span class="separator">/</span>
-          <a href="{{ page.parent_url | relative_url }}">{{ page.parent_name }}</a>
+          <span class="current">{% if page.breadcrumb %}{{ page.breadcrumb }}{% else %}{{ page.title }}{% endif %}</span>
         {% endif %}
-        <span class="separator">/</span>
-        <span class="current">{% if page.breadcrumb %}{{ page.breadcrumb }}{% else %}{{ page.title }}{% endif %}</span>
       </nav>
     </div>
   </header>
