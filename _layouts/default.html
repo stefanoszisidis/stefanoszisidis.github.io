@@ -26,9 +26,13 @@
     <div class="container">
       <a href="{{ '/index.html' | relative_url }}" class="site-title">RunTheCode.gr</a>
       <nav class="breadcrumb">
-        <a href="{{ '/index.html' | relative_url }}">Home</a>
+        <a href="{{ '/' | relative_url }}">Home</a>
+        {% if page.parent_url %}
+          <span class="separator">/</span>
+          <a href="{{ page.parent_url | relative_url }}">{{ page.parent_name }}</a>
+        {% endif %}
         <span class="separator">/</span>
-        <span class="current">{{ page.breadcrumb | default: page.title }}</span>
+        <span class="current">{% if page.breadcrumb %}{{ page.breadcrumb }}{% else %}{{ page.title }}{% endif %}</span>
       </nav>
     </div>
   </header>

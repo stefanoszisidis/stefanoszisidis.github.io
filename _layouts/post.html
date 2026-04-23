@@ -1,31 +1,46 @@
 ---
 layout: default
-breadcrumb: Tech
+parent_name: Tech
+parent_url: /tech.html
 ---
 
 <section class="blog-section">
   <div class="container">
-    <article class="blog-post" style="cursor: default; transform: none; box-shadow: none; border-color: var(--border-color);">
+    <article class="blog-post" style="cursor: default; transform: none; box-shadow: none; border-color: var(--border-color); padding: 3rem;">
       <div class="post-meta">
         <span class="post-tag">{{ page.category }}</span>
         <span class="post-date">{{ page.date | date: "%B %Y" }}</span>
       </div>
 
-      <h1>{{ page.title }}</h1>
+      <h1 style="font-size: 2.5rem; margin-bottom: 2rem; color: var(--text-primary);">{{ page.title }}</h1>
 
-      <div class="post-excerpt">
+      <div class="post-excerpt" style="font-size: 1.1rem; line-height: 1.8;">
         {{ content }}
       </div>
 
-      <div class="tech-stack">
+      <div class="tech-stack" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">Tech Stack & Tags:</div>
         {% for tag in page.tags %}
           <span class="tech-pill">{{ tag }}</span>
         {% endfor %}
       </div>
     </article>
     
-    <div style="margin-top: 2rem;">
-      <a href="{{ '/tech.html' | relative_url }}" class="post-tag" style="text-decoration: none; background: rgba(167, 139, 250, 0.15); color: #a78bfa;">← Back to Tech</a>
+    <div style="margin-top: 3rem; text-align: center;">
+      <a href="{{ '/tech.html' | relative_url }}" class="btn" style="background: rgba(56, 189, 248, 0.1); color: var(--accent-primary); border: 1px solid var(--accent-primary);">← Back to Tech Blog</a>
     </div>
   </div>
 </section>
+
+<style>
+  /* Ensure styles are present even if not in tech.html */
+  .post-tag { background: rgba(56, 189, 248, 0.15); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 500; font-size: 0.8rem; }
+  .tech-pill { background: rgba(167, 139, 250, 0.15); color: #a78bfa; padding: 0.3rem 0.75rem; border-radius: 6px; font-size: 0.8rem; font-weight: 500; margin-right: 0.5rem; margin-bottom: 0.5rem; display: inline-block; }
+  .post-excerpt h2 { color: var(--text-primary); margin: 2rem 0 1rem 0; font-size: 1.75rem; }
+  .post-excerpt h3 { color: var(--text-primary); margin: 1.5rem 0 1rem 0; font-size: 1.25rem; }
+  .post-excerpt p { margin-bottom: 1.2rem; }
+  .post-excerpt code { background: rgba(56, 189, 248, 0.1); color: var(--accent-primary); padding: 0.15rem 0.4rem; border-radius: 4px; font-family: 'Consolas', 'Monaco', monospace; font-size: 0.9em; }
+  .post-excerpt ul, .post-excerpt ol { margin-bottom: 1.2rem; padding-left: 1.5rem; }
+  .post-excerpt li { margin-bottom: 0.5rem; }
+  .post-excerpt strong { color: var(--text-primary); }
+</style>
