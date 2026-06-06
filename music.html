@@ -514,6 +514,8 @@
     let updateInterval;
     let currentYear;
     let currentQuarter;
+    let currentPlaylistId = null;
+    let hasError = false;
 
     let lastPlayingIndex = -1;
     // Play All State
@@ -918,6 +920,7 @@
     // Shared function to display playlist
     function displayPlaylist(playlist, statusId, titleId) {
       console.log('Loading playlist:', playlist.name);
+      currentPlaylistId = playlist.id;
 
       // GA4 Event: Playlist Selected
       if (typeof gtag === 'function') {
@@ -1052,8 +1055,16 @@
           console.log('Track clicked:', trackIndex);
 
           // Play the selected track
-          if (player && player.playVideoAt) {
-            player.playVideoAt(trackIndex);
+          if (player) {
+            if (hasError && player.loadPlaylist && currentPlaylistId) {
+              console.log('Player is in error state, recovering using loadPlaylist at index:', trackIndex);
+              player.loadPlaylist({
+                list: currentPlaylistId,
+                index: trackIndex
+              });
+            } else if (player.playVideoAt) {
+              player.playVideoAt(trackIndex);
+            }
           }
         });
       });
@@ -1091,21 +1102,40 @@
     // Handle Player Error (e.g. video unavailable)
     function onPlayerError(event) {
       console.log('Player Error:', event.data);
+      hasError = true;
+      // 2: Invalid parameter
+      // 5: HTML5 player error
       // 100: Video not found
       // 101, 150: Video owner does not allow embedding
-      if (event.data === 100 || event.data === 101 || event.data === 150) {
+      if (event.data === 2 || event.data === 5 || event.data === 100 || event.data === 101 || event.data === 150) {
         console.log('Skipping unavailable video...');
-        if (player && player.nextVideo) {
-          // Add a small delay to avoid rapid skipping loops
-          setTimeout(() => {
-            player.nextVideo();
-          }, 500);
+        if (player) {
+          try {
+            if (player.nextVideo) {
+              // Add a small delay to avoid rapid skipping loops
+              setTimeout(() => {
+                player.nextVideo();
+              }, 500);
+            } else {
+              throw new Error("nextVideo not available");
+            }
+          } catch (e) {
+            console.warn("nextVideo failed, attempting loadPlaylist recovery", e);
+            if (player.getPlaylistIndex && player.loadPlaylist && currentPlaylistId) {
+              const nextIndex = player.getPlaylistIndex() + 1;
+              player.loadPlaylist({
+                list: currentPlaylistId,
+                index: nextIndex
+              });
+            }
+          }
         }
       }
     }
 
     function onPlayerReady(event) {
       console.log('Player ready');
+      hasError = false;
       setupTrackClickHandlers();
 
       // Clear existing interval if any
@@ -1128,6 +1158,10 @@
 
     function onPlayerStateChange(event) {
       console.log('Player state changed:', event.data);
+
+      if (event.data === YT.PlayerState.PLAYING) {
+        hasError = false;
+      }
 
       // GA4 Event: Track Played
       if (event.data === YT.PlayerState.PLAYING) {
