@@ -276,6 +276,10 @@
       background-clip: text;
       display: inline-block; /* Helps with background-clip in some browsers */
     }
+
+    #youtube-playlist-link:hover {
+      color: #ff0000 !important;
+    }
   </style>
 </head>
 
@@ -397,7 +401,15 @@
           </div>
 
           <div class="tracklist-container">
-            <h3>Tracklist</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <h3 style="margin: 0;">Tracklist</h3>
+              <a id="youtube-playlist-link" href="#" target="_blank" style="display: none; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--text-secondary); font-size: 0.85rem; transition: color 0.2s;" title="Open playlist on YouTube">
+                <span>Open on YouTube</span>
+                <svg style="width: 16px; height: 16px; fill: currentColor;" viewBox="0 0 24 24">
+                  <path d="M23.498 6.163c-.272-1.022-1.074-1.826-2.097-2.097C19.56 3.54 12 3.54 12 3.54s-7.56 0-9.401.526c-1.023.271-1.825 1.075-2.097 2.097C0 8.002 0 12 0 12s0 3.998.502 5.837c.272 1.022 1.074 1.826 2.097 2.097C4.44 20.46 12 20.46 12 20.46s7.56 0 9.401-.526c1.023-.271 1.825-1.075 2.097-2.097C24 15.998 24 12 24 12s0-3.998-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </a>
+            </div>
             <div id="tracklist" class="tracklist">
               <!-- Tracks will be dynamically loaded -->
             </div>
@@ -938,6 +950,13 @@
       const selectionStatus = document.getElementById(statusId);
       selectionStatus.classList.add('visible');
       document.getElementById(titleId).textContent = playlist.name;
+
+      // Update YouTube Playlist Link
+      const ytLink = document.getElementById('youtube-playlist-link');
+      if (ytLink && playlist.id) {
+        ytLink.href = `https://www.youtube.com/playlist?list=${playlist.id}`;
+        ytLink.style.display = 'inline-flex';
+      }
 
       // Load tracks
       const tracklistDiv = document.getElementById('tracklist');
